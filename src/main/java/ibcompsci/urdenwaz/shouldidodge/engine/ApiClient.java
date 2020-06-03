@@ -106,13 +106,21 @@ public class ApiClient {
     }
 
     // https://developer.riotgames.com/api-methods/#champion-mastery-v4/GET_getAllChampionMasteries
+    // Requires id
     public List<ApiValue> getChampions(String id) throws ApiException {
         return getList("/lol/champion-mastery/v4/champion-masteries/by-summoner/" + sanitize(id));
     }
 
     // https://developer.riotgames.com/api-methods/#league-v4/GET_getAllLeaguePositionsForSummoner
+    // Requires id
     public List<ApiValue> getLeagues(String id) throws ApiException {
         return getList("/lol/league/v4/entries/by-summoner/" + sanitize(id));
+    }
+
+    // https://developer.riotgames.com/apis#match-v4/GET_getMatchlist
+    // Requires accountId
+    public ApiValue getMatchHistory(String accountId) throws ApiException {
+        return get("/lol/match/v4/matchlists/by-account/" + sanitize(accountId));
     }
 
 }

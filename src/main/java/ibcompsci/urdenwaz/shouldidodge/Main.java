@@ -16,8 +16,8 @@ public class Main {
 
     //todo UI
     //todo algorithm
-    public static void main(String[] args) {
-
+    public static void main(String[] args) throws Exception {
+        matchHistoryExample();
     }
 
     public static void championLookupExample() throws ApiException {
@@ -36,6 +36,16 @@ public class Main {
         for (ApiValue val : champions) {
             System.out.println(val.raw());
         }
+    }
+
+    public static void matchHistoryExample() throws ApiException, IOException {
+        BufferedReader rdr = new BufferedReader(new FileReader("key.txt"));
+        String key = rdr.readLine();
+
+        ApiClient client = new ApiClient(ENDPOINT, key);
+        String accountID = client.getSummoner("Urdenwaz").get("accountId");
+        ApiValue matchHistory = client.getMatchHistory(accountID);
+        System.out.println(matchHistory.raw());
     }
 
 }

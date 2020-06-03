@@ -38,6 +38,7 @@ public class ChampionLookup {
     public String getChampionListRaw() {
         return championList.raw();
     }
+
     private <T> T getFromDD(Function<JsonElement, T> evaluator) throws ApiException {
         try {
             Request request = new Request.Builder()
