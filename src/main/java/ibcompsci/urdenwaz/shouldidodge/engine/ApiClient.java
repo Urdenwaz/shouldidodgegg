@@ -119,9 +119,9 @@ public class ApiClient {
     }
 
     // https://developer.riotgames.com/apis#match-v4/GET_getMatchlist
-    // Requires accountId
-    public List<ApiValue> getMatchHistory(String accountId, int numMatches) throws ApiException {
-        ApiValue val =  get("/lol/match/v4/matchlists/by-account/" + sanitize(accountId));
+    // Requires accountID
+    public List<ApiValue> getMatchHistory(String accountID, int numMatches) throws ApiException {
+        ApiValue val =  get("/lol/match/v4/matchlists/by-account/" + sanitize(accountID));
         JsonArray array = val.getJsonArray("matches");
         List<ApiValue> values = new ArrayList<>();
 
@@ -130,6 +130,12 @@ public class ApiClient {
                     array.get(i).getAsJsonObject()));
         }
         return values;
+    }
+
+    // https://developer.riotgames.com/apis#match-v4/GET_getMatch
+    // Required matchID
+    public ApiValue getMatch(String matchID) throws ApiException {
+        return get("/lol/match/v4/matches/" + sanitize(matchID));
     }
 
 }
