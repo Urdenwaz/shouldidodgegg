@@ -1,6 +1,7 @@
 package ibcompsci.urdenwaz.shouldidodge.engine;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 
 public class ApiValue {
@@ -23,6 +24,10 @@ public class ApiValue {
 
     public JsonObject getJsonObject(String name) {
         return object.getAsJsonObject(name);
+    }
+
+    public JsonArray getJsonArray(String name) {
+        return object.getAsJsonArray(name);
     }
 
 }
