@@ -36,7 +36,7 @@ public class Main {
     public static void matchHistoryExample() throws ApiException, IOException {
         ApiClient client = new ApiClient(ENDPOINT, ApiClient.loadKey("key.txt"));
         String accountID = client.getSummoner("Urdenwaz").get("accountId");
-        ApiValue matchHistory = client.getMatchHistory(accountID);
+        List<ApiValue> matchHistory = client.getMatchHistory(accountID, 10);
     }
 
 }
