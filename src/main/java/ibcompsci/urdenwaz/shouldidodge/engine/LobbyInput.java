@@ -11,7 +11,6 @@ public class LobbyInput {
 		Scanner sc = new Scanner(s); 
 		StringBuilder name = new StringBuilder();
 		LinkedList<String> res = new LinkedList<String>(); 
-		
 		while(sc.hasNext() && repeats.size() != 5) {
 			String current = sc.next(); 
 			
