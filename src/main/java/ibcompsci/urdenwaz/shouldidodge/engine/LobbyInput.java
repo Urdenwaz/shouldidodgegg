@@ -1,4 +1,4 @@
-package ibcompsci.urdenwaz.shouldidodge;
+package ibcompsci.urdenwaz.shouldidodge.engine;
 
 import java.util.HashSet;
 import java.util.LinkedList;
@@ -11,7 +11,6 @@ public class LobbyInput {
 		Scanner sc = new Scanner(s); 
 		StringBuilder name = new StringBuilder();
 		LinkedList<String> res = new LinkedList<String>(); 
-		
 		while(sc.hasNext() && repeats.size() != 5) {
 			String current = sc.next(); 
 			
