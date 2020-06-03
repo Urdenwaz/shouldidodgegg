@@ -1,4 +1,4 @@
-package ibcompsci.urdenwaz.shouldidodge;
+package ibcompsci.urdenwaz.shouldidodge.engine;
 
 import java.util.HashSet;
 import java.util.LinkedList;
