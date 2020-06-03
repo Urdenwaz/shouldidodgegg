@@ -11,6 +11,7 @@ import java.net.URL;
 import java.net.URLEncoder;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -119,8 +120,16 @@ public class ApiClient {
 
     // https://developer.riotgames.com/apis#match-v4/GET_getMatchlist
     // Requires accountId
-    public ApiValue getMatchHistory(String accountId) throws ApiException {
-        return get("/lol/match/v4/matchlists/by-account/" + sanitize(accountId));
+    public List<ApiValue> getMatchHistory(String accountId, int numMatches) throws ApiException {
+        ApiValue val =  get("/lol/match/v4/matchlists/by-account/" + sanitize(accountId));
+        JsonArray array = val.getJsonArray("matches");
+        List<ApiValue> values = new ArrayList<>();
+
+        for (int i = 0; i < numMatches; i++) {
+            values.add(new ApiValue(new GsonBuilder().setPrettyPrinting().create(),
+                    array.get(i).getAsJsonObject()));
+        }
+        return values;
     }
 
 }
