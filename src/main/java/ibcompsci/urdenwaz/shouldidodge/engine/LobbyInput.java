@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Scanner;
 
 public class LobbyInput {
-	public static List<String> parser(String s) {
+	public List<String> parser(String s) {
 		HashSet<String> repeats = new HashSet<>(); 
 		Scanner sc = new Scanner(s); 
 		StringBuilder name = new StringBuilder();
@@ -32,4 +32,7 @@ public class LobbyInput {
 		}
 		return res;
  	}
+	public Champion getChampion(String Username) {
+		
+	}
 }
