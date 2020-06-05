@@ -2,7 +2,10 @@
 IB Computer Science End of the Year Project
 
 ## Contributors
-CopaceticCleric, Omegasounddragon, Purenacl, Urdenwaz
+CopaceticCleric
+Omegasounddragon
+Purenacl
+Urdenwaz
 
 ## Project
 Lobby Helper for League of Legends
