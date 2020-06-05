@@ -1,0 +1,297 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<form xmlns="http://www.intellij.com/uidesigner/form/" version="1" bind-to-class="ibcompsci.urdenwaz.shouldidodge.ui.MainUI">
+  <grid id="27dc6" binding="mainUIPanel" layout-manager="GridLayoutManager" row-count="12" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+    <margin top="0" left="0" bottom="0" right="0"/>
+    <constraints>
+      <xy x="20" y="20" width="717" height="716"/>
+    </constraints>
+    <properties/>
+    <border type="none"/>
+    <children>
+      <component id="f86fa" class="javax.swing.JLabel" binding="appNameLabel">
+        <constraints>
+          <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="1" fill="0" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <font name="Comic Sans MS" size="48"/>
+          <text value="ShouldIDodge.GG"/>
+        </properties>
+      </component>
+      <component id="31bbf" class="javax.swing.JButton" binding="dodgeButton">
+        <constraints>
+          <grid row="11" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <text value="Should I Dodge?"/>
+        </properties>
+      </component>
+      <splitpane id="f2c3b" binding="topSplitPane">
+        <constraints>
+          <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false">
+            <preferred-size width="100" height="100"/>
+          </grid>
+        </constraints>
+        <properties>
+          <enabled value="false"/>
+        </properties>
+        <border type="none"/>
+        <children>
+          <component id="adcb1" class="javax.swing.JLabel" binding="topLabel">
+            <constraints>
+              <splitpane position="left"/>
+            </constraints>
+            <properties>
+              <horizontalAlignment value="0"/>
+              <text value="Top Summoner"/>
+            </properties>
+          </component>
+          <component id="fbab3" class="javax.swing.JTextField" binding="topSummonerField">
+            <constraints>
+              <splitpane position="right"/>
+            </constraints>
+            <properties>
+              <horizontalAlignment value="2"/>
+            </properties>
+          </component>
+        </children>
+      </splitpane>
+      <splitpane id="c920c" binding="topChampPane">
+        <constraints>
+          <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false">
+            <preferred-size width="200" height="200"/>
+          </grid>
+        </constraints>
+        <properties/>
+        <border type="none"/>
+        <children>
+          <component id="32882" class="javax.swing.JLabel" binding="topChampLabel">
+            <constraints>
+              <splitpane position="left"/>
+            </constraints>
+            <properties>
+              <horizontalAlignment value="0"/>
+              <horizontalTextPosition value="10"/>
+              <text value="Top Champion"/>
+            </properties>
+          </component>
+          <component id="95211" class="javax.swing.JTextField" binding="topChampField">
+            <constraints>
+              <splitpane position="right"/>
+            </constraints>
+            <properties/>
+          </component>
+        </children>
+      </splitpane>
+      <splitpane id="6c91e" binding="jungSplitPane">
+        <constraints>
+          <grid row="3" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false">
+            <preferred-size width="200" height="200"/>
+          </grid>
+        </constraints>
+        <properties/>
+        <border type="none"/>
+        <children>
+          <component id="afaa6" class="javax.swing.JLabel" binding="jungLabel">
+            <constraints>
+              <splitpane position="left"/>
+            </constraints>
+            <properties>
+              <horizontalAlignment value="0"/>
+              <text value="Jungle Summoner"/>
+            </properties>
+          </component>
+          <component id="9a122" class="javax.swing.JTextField" binding="jungSummonerField">
+            <constraints>
+              <splitpane position="right"/>
+            </constraints>
+            <properties/>
+          </component>
+        </children>
+      </splitpane>
+      <splitpane id="eb5db" binding="jungleChampPane">
+        <constraints>
+          <grid row="4" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false">
+            <preferred-size width="200" height="200"/>
+          </grid>
+        </constraints>
+        <properties/>
+        <border type="none"/>
+        <children>
+          <component id="7c2e9" class="javax.swing.JLabel" binding="jungChampLabel">
+            <constraints>
+              <splitpane position="left"/>
+            </constraints>
+            <properties>
+              <horizontalAlignment value="0"/>
+              <text value="Jungle Champion"/>
+            </properties>
+          </component>
+          <component id="dc682" class="javax.swing.JTextField" binding="jungChampField">
+            <constraints>
+              <splitpane position="right"/>
+            </constraints>
+            <properties/>
+          </component>
+        </children>
+      </splitpane>
+      <splitpane id="1aec7" binding="midPane">
+        <constraints>
+          <grid row="5" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false">
+            <preferred-size width="200" height="200"/>
+          </grid>
+        </constraints>
+        <properties/>
+        <border type="none"/>
+        <children>
+          <component id="e4e99" class="javax.swing.JLabel" binding="midLabel">
+            <constraints>
+              <splitpane position="left"/>
+            </constraints>
+            <properties>
+              <horizontalAlignment value="0"/>
+              <text value="Middle Summoner"/>
+            </properties>
+          </component>
+          <component id="4237d" class="javax.swing.JTextField" binding="midSummonerField">
+            <constraints>
+              <splitpane position="right"/>
+            </constraints>
+            <properties/>
+          </component>
+        </children>
+      </splitpane>
+      <splitpane id="66ced" binding="midChampPane">
+        <constraints>
+          <grid row="6" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false">
+            <preferred-size width="200" height="200"/>
+          </grid>
+        </constraints>
+        <properties/>
+        <border type="none"/>
+        <children>
+          <component id="12f72" class="javax.swing.JLabel" binding="midChampLabel">
+            <constraints>
+              <splitpane position="left"/>
+            </constraints>
+            <properties>
+              <horizontalAlignment value="0"/>
+              <text value="Middle Champion"/>
+            </properties>
+          </component>
+          <component id="7ad5e" class="javax.swing.JTextField" binding="midChampField">
+            <constraints>
+              <splitpane position="right"/>
+            </constraints>
+            <properties/>
+          </component>
+        </children>
+      </splitpane>
+      <splitpane id="704f7" binding="botPane">
+        <constraints>
+          <grid row="7" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false">
+            <preferred-size width="200" height="200"/>
+          </grid>
+        </constraints>
+        <properties/>
+        <border type="none"/>
+        <children>
+          <component id="29ebd" class="javax.swing.JLabel" binding="botLabel">
+            <constraints>
+              <splitpane position="left"/>
+            </constraints>
+            <properties>
+              <horizontalAlignment value="0"/>
+              <text value="Bottom Summoner"/>
+            </properties>
+          </component>
+          <component id="6290e" class="javax.swing.JTextField" binding="botSummonerField">
+            <constraints>
+              <splitpane position="right"/>
+            </constraints>
+            <properties/>
+          </component>
+        </children>
+      </splitpane>
+      <splitpane id="c0603" binding="botChampPane">
+        <constraints>
+          <grid row="8" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false">
+            <preferred-size width="200" height="200"/>
+          </grid>
+        </constraints>
+        <properties/>
+        <border type="none"/>
+        <children>
+          <component id="16c6a" class="javax.swing.JLabel" binding="botChampLabel">
+            <constraints>
+              <splitpane position="left"/>
+            </constraints>
+            <properties>
+              <horizontalAlignment value="0"/>
+              <text value="Bottom Champion"/>
+            </properties>
+          </component>
+          <component id="e9761" class="javax.swing.JTextField" binding="botChampField">
+            <constraints>
+              <splitpane position="right"/>
+            </constraints>
+            <properties>
+              <text value=""/>
+            </properties>
+          </component>
+        </children>
+      </splitpane>
+      <splitpane id="df810" binding="supPane">
+        <constraints>
+          <grid row="9" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false">
+            <preferred-size width="200" height="200"/>
+          </grid>
+        </constraints>
+        <properties/>
+        <border type="none"/>
+        <children>
+          <component id="817d8" class="javax.swing.JLabel" binding="supLabel">
+            <constraints>
+              <splitpane position="left"/>
+            </constraints>
+            <properties>
+              <horizontalAlignment value="0"/>
+              <text value="Support Summoner"/>
+            </properties>
+          </component>
+          <component id="3c752" class="javax.swing.JTextField" binding="supSummonerField">
+            <constraints>
+              <splitpane position="right"/>
+            </constraints>
+            <properties/>
+          </component>
+        </children>
+      </splitpane>
+      <splitpane id="38c2e" binding="supChampPane">
+        <constraints>
+          <grid row="10" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false">
+            <preferred-size width="200" height="200"/>
+          </grid>
+        </constraints>
+        <properties/>
+        <border type="none"/>
+        <children>
+          <component id="167d0" class="javax.swing.JLabel" binding="supChampLabel">
+            <constraints>
+              <splitpane position="left"/>
+            </constraints>
+            <properties>
+              <horizontalAlignment value="0"/>
+              <text value="Support Champion"/>
+            </properties>
+          </component>
+          <component id="4772f" class="javax.swing.JTextField" binding="supChampField">
+            <constraints>
+              <splitpane position="right"/>
+            </constraints>
+            <properties/>
+          </component>
+        </children>
+      </splitpane>
+    </children>
+  </grid>
+</form>
