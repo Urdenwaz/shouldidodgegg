@@ -3,8 +3,11 @@ IB Computer Science End of the Year Project
 
 ## Contributors
 CopaceticCleric
+
 Omegasounddragon
+
 Purenacl
+
 Urdenwaz
 
 ## Project
