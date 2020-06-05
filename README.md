@@ -1,4 +1,4 @@
-# ShouldIDodge.gg
+# ShouldIDodge.GG
 IB Computer Science End of the Year Project
 
 ## Contributors
