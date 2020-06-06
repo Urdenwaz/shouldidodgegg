@@ -10,6 +10,10 @@ import javax.swing.JFrame;
 import java.io.IOException;
 import java.util.List;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
+
 public class Main {
 
     private static final String ENDPOINT = "na1.api.riotgames.com";
@@ -20,7 +24,7 @@ public class Main {
         JFrame frame = new MainUI("ShouldIDodge.gg");
         frame.setVisible(true);
     }
-
+   
     public static void championLookupExample() throws ApiException {
         ChampionLookup lookup = new ChampionLookup();
         System.out.println(lookup.getChampionID("Azir"));
@@ -40,6 +44,18 @@ public class Main {
         ApiClient client = new ApiClient(ENDPOINT, ApiClient.loadKey("key.txt"));
         String accountID = client.getSummoner("Urdenwaz").get("accountId");
         List<ApiValue> matchHistory = client.getMatchHistory(accountID, 10);
+    }
+    public static void getmatchExample() throws ApiException, IOException{
+    	ApiClient client = new ApiClient(ENDPOINT, ApiClient.loadKey("key.txt"));
+    	ApiValue match = client.getMatch("3428811840"); 
+    	JsonArray participants = match.getJsonArray("participants"); 
+    	JsonObject participant = participants.getJsonObject(0); 
+    	int id = participant.getInt("participantId"); 
+    	System.out.println(id);
+    	JsonObject stats = participant.getJsonObject("stats");
+    	System.out.println(stats.getBoolean("win"));
+    	
+    	
     }
 
 }

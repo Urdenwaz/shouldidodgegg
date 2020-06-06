@@ -38,8 +38,10 @@ public class LobbyInput {
 		}
 		return res;
  	}
-	public Champion getChampion(String Username) throws ApiException {
+	public Champion getChampion(String Username) throws ApiException, IOException {
 		ApiValue user = client.getSummoner(Username);
+		
 		return new Champion(user.get("id"),user.get("acountId"),user.get("puuid"), user.get("name"));
 	}
+	
 }
