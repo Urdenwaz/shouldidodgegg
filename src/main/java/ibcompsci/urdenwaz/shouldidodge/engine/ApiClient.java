@@ -131,6 +131,20 @@ public class ApiClient {
         }
         return values;
     }
+    
+    public JsonArray getRankedMatchHistory(String accountID, int season) throws ApiException {
+    	StringBuilder sb = new StringBuilder(); 
+    	sb.append("/lol/match/v4/matchlists/by-account/");
+    	sb.append(sanitize(accountID));
+    	sb.append("?queue=420&season=");
+    	sb.append(13);
+        ApiValue val =  get(sb.toString());
+
+        JsonArray array = val.getJsonArray("matches");
+        //debug test
+        //System.out.println(val.getRawJsonObject().get("totalGames").getAsInt());
+        return array;
+    }
 
     // https://developer.riotgames.com/apis#match-v4/GET_getMatch
     // Requires matchID

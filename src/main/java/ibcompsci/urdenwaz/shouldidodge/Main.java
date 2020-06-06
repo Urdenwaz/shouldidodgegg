@@ -30,7 +30,7 @@ public class Main {
         ApiClient client = new ApiClient(ENDPOINT, ApiClient.loadKey("key.txt"));
     	LobbyInput Lobby = new LobbyInput(client);
 //    	summonerExample();
-    	Champion user1 = Lobby.getChampion("kichune");
+    	Champion user1 = Lobby.getChampion("xxpurenaclxx");
     	System.out.println(user1.getWinrate());
     }
    
@@ -53,6 +53,7 @@ public class Main {
         ApiClient client = new ApiClient(ENDPOINT, ApiClient.loadKey("key.txt"));
         String accountID = client.getSummoner("Urdenwaz").get("accountId");
         List<ApiValue> matchHistory = client.getMatchHistory(accountID, 10);
+        
     }
 
     public static void getMatchExample() throws ApiException, IOException{

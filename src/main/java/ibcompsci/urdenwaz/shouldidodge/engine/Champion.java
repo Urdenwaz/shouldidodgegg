@@ -3,8 +3,10 @@ package ibcompsci.urdenwaz.shouldidodge.engine;
 import java.io.IOException;
 import java.util.*;
 
+import com.google.gson.*;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
+
 
 public class Champion {
     
@@ -49,12 +51,17 @@ public class Champion {
 	}
 
 	public void calculateLoseStreak() throws ApiException {
-	      List<ApiValue> matchHistory = client.getMatchHistory(accountID, 100);
+		  if(games == 0) {
+			  return;
+		  }
+	      JsonArray matchHistory = client.getRankedMatchHistory(accountID, 13);
+	      
 	      //Iterates through all games 
-	      for(ApiValue i : matchHistory) {
+	      for(JsonElement i : matchHistory) {
+	    	  
 	    	  // yes ik there is a get function
 	    	  
-	    	  
+
 //	    	  ApiValue match = client.getMatch(gameID);
 	    	  
 	    	  
