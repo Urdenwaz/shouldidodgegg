@@ -1,9 +1,6 @@
 package ibcompsci.urdenwaz.shouldidodge.engine;
 
-
 import com.google.gson.*;
-
-
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
@@ -136,7 +133,7 @@ public class ApiClient {
     }
 
     // https://developer.riotgames.com/apis#match-v4/GET_getMatch
-    // Required matchID
+    // Requires matchID
     public ApiValue getMatch(String matchID) throws ApiException {
         return get("/lol/match/v4/matches/" + sanitize(matchID));
     }

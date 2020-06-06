@@ -1,5 +1,6 @@
 package ibcompsci.urdenwaz.shouldidodge;
 
+
 import ibcompsci.urdenwaz.shouldidodge.engine.ApiClient;
 import ibcompsci.urdenwaz.shouldidodge.engine.ApiException;
 import ibcompsci.urdenwaz.shouldidodge.engine.ApiValue;
@@ -11,6 +12,7 @@ import java.io.IOException;
 import java.util.List;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 
@@ -21,8 +23,9 @@ public class Main {
     //todo UI
     //todo algorithm
     public static void main(String[] args) throws Exception {
-        JFrame frame = new MainUI("ShouldIDodge.gg");
-        frame.setVisible(true);
+//        JFrame frame = new MainUI("ShouldIDodge.gg");
+//        frame.setVisible(true);
+        getMatchExample();
     }
    
     public static void championLookupExample() throws ApiException {
@@ -45,17 +48,15 @@ public class Main {
         String accountID = client.getSummoner("Urdenwaz").get("accountId");
         List<ApiValue> matchHistory = client.getMatchHistory(accountID, 10);
     }
-    public static void getmatchExample() throws ApiException, IOException{
+
+    public static void getMatchExample() throws ApiException, IOException{
     	ApiClient client = new ApiClient(ENDPOINT, ApiClient.loadKey("key.txt"));
     	ApiValue match = client.getMatch("3428811840"); 
-    	JsonArray participants = match.getJsonArray("participants"); 
-    	JsonObject participant = participants.getJsonObject(0); 
-    	int id = participant.getInt("participantId"); 
-    	System.out.println(id);
-    	JsonObject stats = participant.getJsonObject("stats");
-    	System.out.println(stats.getBoolean("win"));
-    	
-    	
+    	JsonArray participants = match.getJsonArray("participants");
+    	JsonObject participant = participants.get(0).getAsJsonObject();
+    	int id = participant.get("participantId").getAsInt();
+    	JsonObject stats = participant.getAsJsonObject("stats");
+    	System.out.println(stats.get("win").getAsBoolean());
     }
 
 }
