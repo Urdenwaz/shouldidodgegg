@@ -1,10 +1,12 @@
 package ibcompsci.urdenwaz.shouldidodge;
 
-
+import ibcompsci.urdenwaz.shouldidodge.engine.*;
 import ibcompsci.urdenwaz.shouldidodge.engine.ApiClient;
 import ibcompsci.urdenwaz.shouldidodge.engine.ApiException;
 import ibcompsci.urdenwaz.shouldidodge.engine.ApiValue;
 import ibcompsci.urdenwaz.shouldidodge.engine.ChampionLookup;
+import ibcompsci.urdenwaz.shouldidodge.engine.LobbyInput;
+
 import ibcompsci.urdenwaz.shouldidodge.ui.MainUI;
 
 import javax.swing.JFrame;
@@ -25,7 +27,11 @@ public class Main {
     public static void main(String[] args) throws Exception {
 //        JFrame frame = new MainUI("ShouldIDodge.gg");
 //        frame.setVisible(true);
-        getMatchExample();
+        ApiClient client = new ApiClient(ENDPOINT, ApiClient.loadKey("key.txt"));
+    	LobbyInput Lobby = new LobbyInput(client);
+//    	summonerExample();
+    	Champion user1 = Lobby.getChampion("kichune");
+    	System.out.println(user1.getWinrate());
     }
    
     public static void championLookupExample() throws ApiException {
@@ -36,7 +42,7 @@ public class Main {
     public static void summonerExample() throws ApiException, IOException {
         ApiClient client = new ApiClient(ENDPOINT, ApiClient.loadKey("key.txt"));
         String summonerID = client.getSummoner("Urdenwaz").get("id");
-
+        System.out.println(client.getSummoner("Urdenwaz").raw().toString());
         List<ApiValue> champions = client.getChampions(summonerID);
         for (ApiValue val : champions) {
             System.out.println(val.raw());

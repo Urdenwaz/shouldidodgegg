@@ -25,7 +25,11 @@ public class ApiValue {
     public JsonObject getJsonObject(String name) {
         return object.getAsJsonObject(name);
     }
-
+    
+    public JsonObject getRawJsonObject() {
+    	return object;
+    }
+    
     public JsonArray getJsonArray(String name) {
         return object.getAsJsonArray(name);
     }

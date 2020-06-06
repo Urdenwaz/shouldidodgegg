@@ -9,8 +9,8 @@ import java.util.Scanner;
 public class LobbyInput {
     private static final String ENDPOINT = "na1.api.riotgames.com";
 	ApiClient client;
-	public LobbyInput() throws IOException {
-		 client = new ApiClient(ENDPOINT, ApiClient.loadKey("key.txt"));
+	public LobbyInput(ApiClient client) throws IOException {
+		 this.client = client;
 	}
 	public List<String> parser(String s) {
 		HashSet<String> repeats = new HashSet<>(); 
@@ -41,7 +41,7 @@ public class LobbyInput {
 	public Champion getChampion(String Username) throws ApiException, IOException {
 		ApiValue user = client.getSummoner(Username);
 		
-		return new Champion(user.get("id"),user.get("acountId"),user.get("puuid"), user.get("name"));
+		return new Champion(user.get("id"),user.get("accountId"),user.get("puuid"), user.get("name"), client);
 	}
 	
 }
