@@ -26,11 +26,11 @@ public class Main {
     //todo algorithm
     public static void main(String[] args) throws Exception {
 //        JFrame frame = new MainUI("ShouldIDodge.gg");
-//        frame.setVisible(true);
+//        frameg.setVisible(true);
         ApiClient client = new ApiClient(ENDPOINT, ApiClient.loadKey("key.txt"));
     	LobbyInput Lobby = new LobbyInput(client);
 //    	summonerExample();
-    	Champion user1 = Lobby.getChampion("xxunknowndeathxx");
+    	Champion user1 = Lobby.getChampion("xxpurenaclxx");
     	System.out.println(user1.getWinrate());
     	System.out.println(user1.getLoseStreak());
     	System.out.println(user1.shouldIdodge());

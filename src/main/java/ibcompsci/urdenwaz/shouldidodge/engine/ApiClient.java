@@ -111,6 +111,18 @@ public class ApiClient {
     public List<ApiValue> getChampions(String id) throws ApiException {
         return getList("/lol/champion-mastery/v4/champion-masteries/by-summoner/" + sanitize(id));
     }
+    //https://developer.riotgames.com/apis#champion-mastery-v4/GET_getAllChampionMasteries
+    //Requires Id
+    //Required championID
+    public ApiValue getChampionMasteryByChampionID(String id, int championID) throws ApiException {
+    	StringBuilder sb = new StringBuilder(); 
+    	sb.append("/lol/champion-mastery/v4/champion-masteries/by-summoner/");
+    	sb.append(sanitize(id));
+    	sb.append("/by-champion/");
+    	sb.append(championID);
+    	return get(sb.toString());
+    	
+    }
 
     // https://developer.riotgames.com/api-methods/#league-v4/GET_getAllLeaguePositionsForSummoner
     // Requires id
@@ -131,7 +143,9 @@ public class ApiClient {
         }
         return values;
     }
-    
+    //Requires acountID 
+    //Requires season 
+    //search ranked only QueueID: 420 
     public JsonArray getRankedMatchHistory(String accountID, int season) throws ApiException {
     	StringBuilder sb = new StringBuilder(); 
     	sb.append("/lol/match/v4/matchlists/by-account/");
@@ -151,6 +165,6 @@ public class ApiClient {
     public ApiValue getMatch(String matchID) throws ApiException {
         return get("/lol/match/v4/matches/" + sanitize(matchID));
     }
-
+    
 }
 
