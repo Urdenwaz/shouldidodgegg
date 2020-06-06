@@ -86,7 +86,12 @@ public class ApiClient {
             return new ApiValue(gson, object);
         });
     }
-
+    private JsonArray getAsJsonArray(String path) throws ApiException{
+    	  return get(path, (element) -> {
+              JsonArray array = element.getAsJsonArray();
+              return array;
+          });
+    }
     private String sanitize(String parameter) throws ApiException {
         try {
             return URLEncoder.encode(parameter, "UTF-8");
@@ -108,8 +113,8 @@ public class ApiClient {
 
     // https://developer.riotgames.com/api-methods/#champion-mastery-v4/GET_getAllChampionMasteries
     // Requires id
-    public List<ApiValue> getChampions(String id) throws ApiException {
-        return getList("/lol/champion-mastery/v4/champion-masteries/by-summoner/" + sanitize(id));
+    public JsonArray getChampions(String id) throws ApiException {
+        return getAsJsonArray("/lol/champion-mastery/v4/champion-masteries/by-summoner/" + sanitize(id));
     }
     //https://developer.riotgames.com/apis#champion-mastery-v4/GET_getAllChampionMasteries
     //Requires Id

@@ -20,6 +20,7 @@ public class Champion {
 	private ApiClient client;
 	private HashMap<Integer, int[]> championWinRate;
 	private HashMap<String, Integer> roles;
+	private String mainRole;
 
 	public Champion(String ID, String accountID, String puuID, String name, ApiClient client)
 			throws IOException, ApiException {
@@ -47,6 +48,10 @@ public class Champion {
 
 	public int getLoseStreak() {
 		return loseStreak;
+	}
+
+	public String getMainRole() {
+		return mainRole;
 	}
 
 	public void calculateWinRate() throws ApiException {
@@ -127,6 +132,7 @@ public class Champion {
 			}
 
 		}
+		setMainRole();
 
 	}
 
@@ -149,14 +155,30 @@ public class Champion {
 
 		return championLevel < 3;
 	}
-	public void test() {
-		for(String i: roles.keySet()) {
-			System.out.print(i+": ");
-			System.out.println(roles.get(i));
-			
+
+	public void setMainRole() {
+		int max = 0;
+		mainRole = "None";
+		for (String i : roles.keySet()) {
+			if (roles.get(i) > max) {
+				max = roles.get(i);
+				mainRole = i;
+			}
 		}
 	}
 
+	/*
+	 * yuumi 350 Soraka 16 nami 267 morgana 25 janna 40 lux 99 lulu 117 sona 37
+	 * 
+	 */
+
+	public boolean isEGirl() throws ApiException {
+		JsonArray masteries = client.getChampions(ID);
+		for(JsonElement i: masteries) {
+			System.out.println(i.getAsJsonObject().get("championId").getAsInt());
+		}
+		return false;
+	}
 	/*
 	 * ApiClient client = new ApiClient(ENDPOINT, ApiClient.loadKey("key.txt"));
 	 * ApiValue match = client.getMatch("3428811840"); JsonArray participants =

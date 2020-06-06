@@ -30,12 +30,13 @@ public class Main {
         ApiClient client = new ApiClient(ENDPOINT, ApiClient.loadKey("key.txt"));
     	LobbyInput Lobby = new LobbyInput(client);
 //    	summonerExample();
-    	Champion user1 = Lobby.getChampion("urdenwaz");
+    	Champion user1 = Lobby.getChampion("magikulhobo");
     	System.out.println(user1.getWinrate());
     	System.out.println(user1.getLoseStreak());
     	System.out.println(user1.shouldIdodge());
     	System.out.println(user1.firstTime(50));
-    	user1.test();
+    	System.out.println(user1.getMainRole());
+    	user1.isEGirl();
     }
    
     public static void championLookupExample() throws ApiException {
@@ -47,10 +48,10 @@ public class Main {
         ApiClient client = new ApiClient(ENDPOINT, ApiClient.loadKey("key.txt"));
         String summonerID = client.getSummoner("Urdenwaz").get("id");
         System.out.println(client.getSummoner("Urdenwaz").raw().toString());
-        List<ApiValue> champions = client.getChampions(summonerID);
-        for (ApiValue val : champions) {
-            System.out.println(val.raw());
-        }
+//        List<ApiValue> champions = client.getChampions(summonerID);
+//        for (ApiValue val : champions) {
+//            System.out.println(val.raw());
+//        }
     }
 
     public static void matchHistoryExample() throws ApiException, IOException {
