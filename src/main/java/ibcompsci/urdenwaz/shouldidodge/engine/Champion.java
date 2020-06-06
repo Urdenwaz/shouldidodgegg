@@ -32,7 +32,8 @@ public class Champion {
 	}
 
 	public boolean shouldIdodge() {
-		return loseStreak > 3 || (winrate <= 45.0 && games > 40);
+		
+		return loseStreak > 3 || (winrate <= 0.45 && games > 40);
 	}
 	public float getWinrate() {
 		return winrate;
@@ -47,8 +48,20 @@ public class Champion {
 			winrate = 1;
 			return;
 		}
-		float win = Float.parseFloat(ranked.get(0).get("wins"));
-		float loss = Float.parseFloat(ranked.get(0).get("losses"));
+		ApiValue rankedSolo = null;
+		for(ApiValue i: ranked) {
+			if(i.get("queueType").equals("RANKED_SOLO_5x5")) {
+				rankedSolo = i;
+				break;
+			}
+		}
+		if(rankedSolo == null) {
+			games = 0;
+			winrate = 1;
+			return;
+		}
+		float win = Float.parseFloat(rankedSolo.get("wins"));
+		float loss = Float.parseFloat(rankedSolo.get("losses"));
 		games = (int) (win+loss); 
 		winrate = win/(win+loss);
 	}
