@@ -19,6 +19,7 @@ public class Champion {
 	private String name;
 	private ApiClient client;
 	private HashMap<Integer, int[]> championWinRate;
+	private HashMap<String, Integer> roles;
 
 	public Champion(String ID, String accountID, String puuID, String name, ApiClient client)
 			throws IOException, ApiException {
@@ -29,8 +30,9 @@ public class Champion {
 		this.client = client;
 		this.loseStreak = 0;
 		this.championWinRate = new HashMap<Integer, int[]>();
+		this.roles = new HashMap<String, Integer>();
 		calculateWinRate();
-		calculateLoseStreak();
+		calculateLoseStreakAndRole();
 
 	}
 
@@ -72,7 +74,7 @@ public class Champion {
 		winrate = win / (win + loss);
 	}
 
-	public void calculateLoseStreak() throws ApiException {
+	public void calculateLoseStreakAndRole() throws ApiException {
 		if (games == 0) {
 			return;
 		}
@@ -81,55 +83,78 @@ public class Champion {
 		// Iterates through all games
 
 		for (JsonElement i : matchHistory) {
-			if (end == true) {
-				break;
+//			if (end == true) {
+//				break;
+//			}
+			String role = i.getAsJsonObject().get("lane").getAsString();
+			if (role.equals("BOTTOM")) {
+				String bottom = i.getAsJsonObject().get("role").getAsString();
+				if (roles.containsKey(bottom))
+					roles.put(bottom, roles.get(bottom) + 1);
+				else
+					roles.put(bottom, 1);
+			} else {
+				if (roles.containsKey(role))
+					roles.put(role, roles.get(role) + 1);
+				else
+					roles.put(role, 1);
 			}
 
-			int ChampionID = i.getAsJsonObject().get("champion").getAsInt();
-			ApiValue match = client.getMatch(i.getAsJsonObject().get("gameId").getAsString());
-			JsonArray participants = match.getJsonArray("participants");
-			JsonObject player = null;
-			for (JsonElement j : participants) {
-				if (j.getAsJsonObject().get("championId").getAsInt() == ChampionID) {
-					player = j.getAsJsonObject();
-					break;
+			if (end == false) {
+				int ChampionID = i.getAsJsonObject().get("champion").getAsInt();
+				ApiValue match = client.getMatch(i.getAsJsonObject().get("gameId").getAsString());
+				JsonArray participants = match.getJsonArray("participants");
+				JsonObject player = null;
+				for (JsonElement j : participants) {
+					if (j.getAsJsonObject().get("championId").getAsInt() == ChampionID) {
+						player = j.getAsJsonObject();
+						break;
+					}
 				}
-			}
-			if (player == null) {
-				continue;
-			}
-			int teamID = player.get("teamId").getAsInt();
-			JsonArray teams = match.getJsonArray("teams");
-			String result = teamID == 100 ? teams.get(0).getAsJsonObject().get("win").getAsString()
-					: teams.get(1).getAsJsonObject().get("win").getAsString();
-			if (result.equals("Win")) {
-				end = true;
-				
-			} else {
-				if (end == false)
+				if (player == null) {
+					continue;
+				}
+				int teamID = player.get("teamId").getAsInt();
+				JsonArray teams = match.getJsonArray("teams");
+				String result = teamID == 100 ? teams.get(0).getAsJsonObject().get("win").getAsString()
+						: teams.get(1).getAsJsonObject().get("win").getAsString();
+				if (result.equals("Win")) {
+					end = true;
+
+				} else {
 					loseStreak++;
+				}
 			}
 
 		}
 
 	}
+
 	public void calculateChampionWinRate(int index, int champion) {
-		if(championWinRate.containsKey(champion)) {
-			championWinRate.get(champion)[index] +=1;
+		if (championWinRate.containsKey(champion)) {
+			championWinRate.get(champion)[index] += 1;
 			return;
 		}
 		int[] a = new int[2];
-		a[index] +=1; 
+		a[index] += 1;
 		championWinRate.put(champion, a);
 	}
+
 	public boolean firstTime(int champion) throws ApiException {
 		ApiValue mastery = client.getChampionMasteryByChampionID(ID, champion);
-		if(mastery.getRawJsonObject().has("championLevel") == false) {
-			return true; 
+		if (mastery.getRawJsonObject().has("championLevel") == false) {
+			return true;
 		}
 		int championLevel = mastery.getRawJsonObject().get("championLevel").getAsInt();
-		
-		return championLevel < 3; 
+
+		return championLevel < 3;
+	}
+	public void test() {
+		for(String i: roles.keySet()) {
+			System.out.print(i+": ");
+			System.out.println(roles.get(i));
+			
+		}
 	}
 
 	/*
