@@ -1,11 +1,17 @@
 package ibcompsci.urdenwaz.shouldidodge.engine;
 
+import java.io.IOException;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Scanner;
 
 public class LobbyInput {
+    private static final String ENDPOINT = "na1.api.riotgames.com";
+	ApiClient client;
+	public LobbyInput() throws IOException {
+		 client = new ApiClient(ENDPOINT, ApiClient.loadKey("key.txt"));
+	}
 	public List<String> parser(String s) {
 		HashSet<String> repeats = new HashSet<>(); 
 		Scanner sc = new Scanner(s); 
@@ -32,7 +38,8 @@ public class LobbyInput {
 		}
 		return res;
  	}
-	public Champion getChampion(String Username) {
-		
+	public Champion getChampion(String Username) throws ApiException {
+		ApiValue user = client.getSummoner(Username);
+		return new Champion(user.get("id"),user.get("acountId"),user.get("puuid"), user.get("name"));
 	}
 }

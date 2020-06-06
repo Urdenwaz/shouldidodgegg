@@ -8,7 +8,13 @@ public class Champion {
 	private String ID; 
 	private String acountID; 
 	private String puuID;
-	
+	private String name; 
+	public Champion(String ID, String acountID, String puuID, String name) {
+		this.acountID = acountID; 
+		this.ID = ID; 
+		this.puuID = puuID;
+		this.name = name;
+	}
 	public boolean shouldIdodge() {
 		return loseStreak || (winrate <= 45.0);
 	}
