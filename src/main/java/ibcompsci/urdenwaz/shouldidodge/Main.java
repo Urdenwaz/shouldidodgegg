@@ -34,6 +34,7 @@ public class Main {
     	System.out.println(user1.getWinrate());
     	System.out.println(user1.getLoseStreak());
     	System.out.println(user1.shouldIdodge());
+    	System.out.println(user1.firstTime(50));
     }
    
     public static void championLookupExample() throws ApiException {

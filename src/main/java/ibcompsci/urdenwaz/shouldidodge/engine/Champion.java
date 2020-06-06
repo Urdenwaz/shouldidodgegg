@@ -122,6 +122,15 @@ public class Champion {
 		a[index] +=1; 
 		championWinRate.put(champion, a);
 	}
+	public boolean firstTime(int champion) throws ApiException {
+		ApiValue mastery = client.getChampionMasteryByChampionID(ID, champion);
+		if(mastery.getRawJsonObject().has("championLevel") == false) {
+			return true; 
+		}
+		int championLevel = mastery.getRawJsonObject().get("championLevel").getAsInt();
+		
+		return championLevel < 3; 
+	}
 
 	/*
 	 * ApiClient client = new ApiClient(ENDPOINT, ApiClient.loadKey("key.txt"));
