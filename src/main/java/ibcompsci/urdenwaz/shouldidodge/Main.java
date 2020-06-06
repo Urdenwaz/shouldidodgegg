@@ -30,8 +30,9 @@ public class Main {
         ApiClient client = new ApiClient(ENDPOINT, ApiClient.loadKey("key.txt"));
     	LobbyInput Lobby = new LobbyInput(client);
 //    	summonerExample();
-    	Champion user1 = Lobby.getChampion("xxpurenaclxx");
+    	Champion user1 = Lobby.getChampion("urdenwaz");
     	System.out.println(user1.getWinrate());
+    	System.out.println(user1.getLoseStreak());
     }
    
     public static void championLookupExample() throws ApiException {

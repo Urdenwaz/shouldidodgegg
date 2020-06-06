@@ -37,6 +37,9 @@ public class Champion {
 	public float getWinrate() {
 		return winrate;
 	}
+	public int getLoseStreak() {
+		return loseStreak;
+	}
 	public void calculateWinRate() throws ApiException {
 		List<ApiValue> ranked =  client.getLeagues(ID);
 		if(ranked == null || ranked.size() == 0) {
@@ -55,15 +58,36 @@ public class Champion {
 			  return;
 		  }
 	      JsonArray matchHistory = client.getRankedMatchHistory(accountID, 13);
-	      
+	      boolean end = false;
 	      //Iterates through all games 
 	      for(JsonElement i : matchHistory) {
-	    	  
-	    	  // yes ik there is a get function
-	    	  
-
-//	    	  ApiValue match = client.getMatch(gameID);
-	    	  
+	    	  if(end == true) {
+	    		  break;
+	    	  }
+	    	  int ChampionID = i.getAsJsonObject().get("champion").getAsInt();
+	    	  ApiValue match = client.getMatch(i.getAsJsonObject().get("gameId").getAsString());
+	      	  JsonArray participants = match.getJsonArray("participants");
+	      	  JsonObject player = null;
+	      	  for(JsonElement j: participants) {
+	      		  if(j.getAsJsonObject().get("championId").getAsInt() == ChampionID) {
+	      			  player = j.getAsJsonObject();
+	      			  break;
+	      		  }
+	      	  }
+	      	  if(player == null) {
+	      		  continue;
+	      	  }
+	      	  if(end == false) {
+	      		  int teamID = player.get("teamId").getAsInt();
+	      		  JsonArray teams = match.getJsonArray("teams");
+	      		  String result = teamID == 100? teams.get(0).getAsJsonObject().get("win").getAsString() : teams.get(1).getAsJsonObject().get("win").getAsString();
+	      		  if(result.equals("Win")) {
+	      			  end = true;
+	      		  }else {
+	      			  loseStreak++;
+	      		  }
+	      	  }
+	      	  
 	    	  
 	      }
 	      
