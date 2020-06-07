@@ -72,6 +72,7 @@ public class Champion {
 			sb.append(profileIcon);
 			sb.append(".png");
 		    URL url = new URL(sb.toString());
+		    System.out.println(sb.toString());
 		    image = ImageIO.read(url);
 		} catch (IOException e) {
 		}

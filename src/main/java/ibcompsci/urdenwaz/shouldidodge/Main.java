@@ -38,6 +38,7 @@ public class Main {
     	System.out.println(user1.firstTime(50));
     	System.out.println(user1.getMainRole());
     	System.out.println("is she a egirl:" + user1.isEGirl());
+    	user1.getProfileIcon();
     }
    
     public static void championLookupExample() throws ApiException {
