@@ -83,10 +83,11 @@ public class MainUI extends JFrame implements ActionListener {
             for (Summoner c : summonerLobby) {
                 if (c.shouldIdodge()) {
                     dodgeCount++;
+                    System.out.println(c);
                 }
             }
 
-            if (dodgeCount < 3) {
+            if (dodgeCount >= 3) {
                 JOptionPane.showMessageDialog(null, "Dodge this game.");
             } else {
                 JOptionPane.showMessageDialog(null, "Coast is clear, you're free to go.");
@@ -136,7 +137,7 @@ public class MainUI extends JFrame implements ActionListener {
         topChampLabel = new JLabel();
         topChampLabel.setHorizontalAlignment(0);
         topChampLabel.setHorizontalTextPosition(10);
-        topChampLabel.setText("Top Summoner");
+        topChampLabel.setText("Top Champion");
         topChampPane.setLeftComponent(topChampLabel);
         topChampField = new JTextField();
         topChampPane.setRightComponent(topChampField);
@@ -152,7 +153,7 @@ public class MainUI extends JFrame implements ActionListener {
         mainUIPanel.add(jungleChampPane, new com.intellij.uiDesigner.core.GridConstraints(4, 0, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_CENTER, com.intellij.uiDesigner.core.GridConstraints.FILL_BOTH, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_SHRINK | com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_SHRINK | com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_GROW, null, new Dimension(200, 200), null, 0, false));
         jungChampLabel = new JLabel();
         jungChampLabel.setHorizontalAlignment(0);
-        jungChampLabel.setText("Jungle Summoner");
+        jungChampLabel.setText("Jungle Champion");
         jungleChampPane.setLeftComponent(jungChampLabel);
         jungChampField = new JTextField();
         jungleChampPane.setRightComponent(jungChampField);
@@ -168,7 +169,7 @@ public class MainUI extends JFrame implements ActionListener {
         mainUIPanel.add(midChampPane, new com.intellij.uiDesigner.core.GridConstraints(6, 0, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_CENTER, com.intellij.uiDesigner.core.GridConstraints.FILL_BOTH, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_SHRINK | com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_SHRINK | com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_GROW, null, new Dimension(200, 200), null, 0, false));
         midChampLabel = new JLabel();
         midChampLabel.setHorizontalAlignment(0);
-        midChampLabel.setText("Middle Summoner");
+        midChampLabel.setText("Middle Champion");
         midChampPane.setLeftComponent(midChampLabel);
         midChampField = new JTextField();
         midChampPane.setRightComponent(midChampField);
@@ -184,7 +185,7 @@ public class MainUI extends JFrame implements ActionListener {
         mainUIPanel.add(botChampPane, new com.intellij.uiDesigner.core.GridConstraints(8, 0, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_CENTER, com.intellij.uiDesigner.core.GridConstraints.FILL_BOTH, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_SHRINK | com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_SHRINK | com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_GROW, null, new Dimension(200, 200), null, 0, false));
         botChampLabel = new JLabel();
         botChampLabel.setHorizontalAlignment(0);
-        botChampLabel.setText("Bottom Summoner");
+        botChampLabel.setText("Bottom Champion");
         botChampPane.setLeftComponent(botChampLabel);
         botChampField = new JTextField();
         botChampField.setText("");
@@ -201,7 +202,7 @@ public class MainUI extends JFrame implements ActionListener {
         mainUIPanel.add(supChampPane, new com.intellij.uiDesigner.core.GridConstraints(10, 0, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_CENTER, com.intellij.uiDesigner.core.GridConstraints.FILL_BOTH, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_SHRINK | com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_SHRINK | com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_GROW, null, new Dimension(200, 200), null, 0, false));
         supChampLabel = new JLabel();
         supChampLabel.setHorizontalAlignment(0);
-        supChampLabel.setText("Support Summoner");
+        supChampLabel.setText("Support Champion");
         supChampPane.setLeftComponent(supChampLabel);
         supChampField = new JTextField();
         supChampPane.setRightComponent(supChampField);
