@@ -41,7 +41,7 @@ public class LobbyInput {
 	public Champion getChampion(String Username) throws ApiException, IOException {
 		ApiValue user = client.getSummoner(Username);
 		
-		return new Champion(user.get("id"),user.get("accountId"),user.get("puuid"), user.get("name"), client);
+		return new Champion(user.get("id"),user.get("accountId"),user.get("puuid"), user.get("name"), user.getRawJsonObject().get("profileIconId").getAsInt(), client);
 	}
 	
 }

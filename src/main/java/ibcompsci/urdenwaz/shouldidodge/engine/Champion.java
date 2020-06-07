@@ -1,9 +1,13 @@
 package ibcompsci.urdenwaz.shouldidodge.engine;
 
+import java.awt.Image;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.net.URL;
 import java.util.*;
+
+import javax.imageio.ImageIO;
 
 import com.google.gson.*;
 import com.google.gson.JsonArray;
@@ -22,18 +26,21 @@ public class Champion {
 	private ApiClient client;
 	private HashMap<Integer, int[]> championWinRate;
 	private HashMap<String, Integer> roles;
-	private String mainRole;
+	private String mainRole;	
+	private int profileIcon;
 
-	public Champion(String ID, String accountID, String puuID, String name, ApiClient client)
+	public Champion(String ID, String accountID, String puuID, String name, int profileIcon, ApiClient client)
 			throws IOException, ApiException {
 		this.accountID = accountID;
 		this.ID = ID;
 		this.puuID = puuID;
 		this.name = name;
 		this.client = client;
+		this.profileIcon = profileIcon;
 		this.loseStreak = 0;
 		this.championWinRate = new HashMap<Integer, int[]>();
 		this.roles = new HashMap<String, Integer>();
+	
 		calculateWinRate();
 		calculateLoseStreakAndRole();
 
@@ -54,6 +61,21 @@ public class Champion {
 
 	public String getMainRole() {
 		return mainRole;
+	}
+	public Image getProfileIcon() {
+		Image image = null;
+		try {
+			StringBuilder sb = new StringBuilder(); 
+			sb.append("http://ddragon.leagueoflegends.com/cdn/");
+			sb.append(client.getPatch());
+			sb.append("/img/profileicon/");
+			sb.append(profileIcon);
+			sb.append(".png");
+		    URL url = new URL(sb.toString());
+		    image = ImageIO.read(url);
+		} catch (IOException e) {
+		}
+		return image;
 	}
 
 	public void calculateWinRate() throws ApiException {

@@ -27,7 +27,8 @@ public class ApiClient {
     Gson gson;
     JsonParser parser;
     OkHttpClient http;
-
+    
+    String patch;
     // See https://developer.riotgames.com/static-data.html
 
     // See https://developer.riotgames.com/api-keys.html
@@ -40,9 +41,10 @@ public class ApiClient {
      * @param endpoint DNS name of the endpoint
      * @param key API key
      */
-    public ApiClient(String endpoint, String key) {
+    public ApiClient(String endpoint, String key, String patch) {
         this(endpoint, key, new GsonBuilder().setPrettyPrinting().create(),
                 new JsonParser(), new OkHttpClient());
+        this.patch = patch;
     }
 
     public ApiClient(String endpoint, String key, Gson gson, JsonParser parser, OkHttpClient http) {
@@ -52,7 +54,9 @@ public class ApiClient {
         this.parser = parser;
         this.http = http;
     }
-
+    public String getPatch() {
+    	return patch;
+    }
     private <T> T get(String path, Function<JsonElement, T> evaluator) throws ApiException {
         try {
             Request request = new Request.Builder()
