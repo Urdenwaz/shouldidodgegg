@@ -1,5 +1,7 @@
 package ibcompsci.urdenwaz.shouldidodge.engine;
 
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.*;
 
@@ -172,14 +174,21 @@ public class Champion {
 	 * 
 	 */
 
-	public boolean isEGirl() throws ApiException {
+	public boolean isEGirl() throws ApiException, FileNotFoundException {
 		JsonArray masteries = client.getChampions(ID);
+		Scanner sc = new Scanner(new File("EgirlChamps.txt"));
+		HashSet<Integer> AllEgirlChamps = new HashSet<>();
+		while(sc.hasNext()) {
+			int holder = sc.nextInt();
+
+			AllEgirlChamps.add(holder);
+		}
 		int counter = 0; 
 		int EgirlChamps = 0;
 		for(JsonElement i: masteries) {
 			counter++;
 			int currentChampionID = i.getAsJsonObject().get("championId").getAsInt();
-			if(currentChampionID  == 350 || currentChampionID == 16 || currentChampionID == 267 || currentChampionID == 25 || currentChampionID == 40 || currentChampionID == 99 || currentChampionID == 117 || currentChampionID == 37) {
+			if(AllEgirlChamps.contains(currentChampionID)) {
 				EgirlChamps++;
 			}
 			if(counter > 4) {

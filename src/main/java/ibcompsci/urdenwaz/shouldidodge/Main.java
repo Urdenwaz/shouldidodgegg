@@ -69,6 +69,7 @@ public class Main {
     	JsonObject participant = participants.get(0).getAsJsonObject();
     	int id = participant.get("participantId").getAsInt();
     	JsonObject stats = participant.getAsJsonObject("stats");
+    	
     	//System.out.println(stats.get("win").getAsBoolean());
     }
 
