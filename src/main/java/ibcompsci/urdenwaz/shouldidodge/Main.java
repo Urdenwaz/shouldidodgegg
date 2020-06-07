@@ -30,7 +30,7 @@ public class Main {
         ApiClient client = new ApiClient(ENDPOINT, ApiClient.loadKey("key.txt"));
     	LobbyInput Lobby = new LobbyInput(client);
 //    	summonerExample();
-    	Champion user1 = Lobby.getChampion("magikulhobo");
+    	Champion user1 = Lobby.getChampion("bläck rose");
     	
     	System.out.println(user1.getWinrate());
     	System.out.println(user1.getLoseStreak());

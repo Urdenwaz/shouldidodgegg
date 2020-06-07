@@ -170,7 +170,7 @@ public class Champion {
 	}
 
 	/*
-	 * yuumi 350 Soraka 16 nami 267 morgana 25 janna 40 lux 99 lulu 117 sona 37
+	 * yuumi 350 Soraka 16 nami 267 morgana 25 janna 40 lux 99 lulu 117 sona 37 ahri 103 zoe 142 miss fortune 21
 	 * 
 	 */
 
@@ -178,6 +178,7 @@ public class Champion {
 		JsonArray masteries = client.getChampions(ID);
 		Scanner sc = new Scanner(new File("EgirlChamps.txt"));
 		HashSet<Integer> AllEgirlChamps = new HashSet<>();
+
 		while(sc.hasNext()) {
 			int holder = sc.nextInt();
 
@@ -188,6 +189,7 @@ public class Champion {
 		for(JsonElement i: masteries) {
 			counter++;
 			int currentChampionID = i.getAsJsonObject().get("championId").getAsInt();
+			//System.out.println(currentChampionID );
 			if(AllEgirlChamps.contains(currentChampionID)) {
 				EgirlChamps++;
 			}
@@ -195,6 +197,7 @@ public class Champion {
 				break;
 			}
 		}
+		//System.out.println(EgirlChamps+" "+counter);
 		return (counter-EgirlChamps <= 2);
 	}
 	/*
