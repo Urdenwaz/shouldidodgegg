@@ -5,12 +5,16 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 
+import javax.imageio.ImageIO;
+import java.awt.*;
+import java.io.IOException;
 import java.net.URL;
 import java.util.function.Function;
 
-public class ChampionLookup {
+public class DdragonLookup {
 
     ApiValue championList;
+    String patch;
 
     Gson gson;
     JsonParser parser;
@@ -18,12 +22,12 @@ public class ChampionLookup {
 
     // See http://ddragon.leagueoflegends.com/cdn/6.24.1/data/en_US/champion.json
     // Needs raw champion list for Champion Key lookup
-    public ChampionLookup() throws ApiException {
-        this(new GsonBuilder().setPrettyPrinting().create(), new JsonParser(),
+    public DdragonLookup(String patch) throws ApiException {
+        this(patch, new GsonBuilder().setPrettyPrinting().create(), new JsonParser(),
                 new OkHttpClient());
     }
 
-    public ChampionLookup(Gson gson, JsonParser parser, OkHttpClient http) throws ApiException {
+    public DdragonLookup(String patch, Gson gson, JsonParser parser, OkHttpClient http) throws ApiException {
         this.gson = gson;
         this.parser = parser;
         this.http = http;
@@ -60,6 +64,13 @@ public class ChampionLookup {
             JsonObject object = element.getAsJsonObject();
             return new ApiValue(gson, object);
         });
+    }
+
+    public Image getProfileIcon(int iconID) throws IOException {
+        URL url = new URL("http://ddragon.leagueoflegends.com/cdn/" + patch +
+                "/img/profileicon/" + iconID + ".png");
+        Image image = ImageIO.read(url);
+        return image;
     }
 
 }

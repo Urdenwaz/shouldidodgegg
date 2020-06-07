@@ -2,8 +2,12 @@ package ibcompsci.urdenwaz.shouldidodge.ui;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.List;
 
-public class MainUI extends JFrame {
+public class MainUI extends JFrame implements ActionListener {
 
     private JButton dodgeButton;
     private JLabel appNameLabel;
@@ -47,9 +51,30 @@ public class MainUI extends JFrame {
         this.setSize(new Dimension(1000, 1000));
         this.pack();
 
-        dodgeButton.addActionListener(e ->
-                JOptionPane.showMessageDialog(null, "Dodge Bitch")
-        );
+        dodgeButton.addActionListener(this);
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+
+    }
+
+    // Return order:
+    // [0] = Top
+    // [1] = Jungle
+    // [2] = Middle
+    // [3] = Bottom
+    // [4] = Support
+    public List<String> getSummonerNames() {
+        List<String> summonerNames = new ArrayList<>();
+
+        summonerNames.add(topSummonerField.getText());
+        summonerNames.add(jungSummonerField.getText());
+        summonerNames.add(midSummonerField.getText());
+        summonerNames.add(botSummonerField.getText());
+        summonerNames.add(supSummonerField.getText());
+
+        return summonerNames;
     }
 
     {

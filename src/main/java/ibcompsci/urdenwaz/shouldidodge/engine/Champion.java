@@ -28,6 +28,7 @@ public class Champion {
 	private HashMap<String, Integer> roles;
 	private String mainRole;	
 	private int profileIcon;
+	private DdragonLookup lookup;
 
 	public Champion(String ID, String accountID, String puuID, String name, int profileIcon, ApiClient client)
 			throws IOException, ApiException {
@@ -40,10 +41,15 @@ public class Champion {
 		this.loseStreak = 0;
 		this.championWinRate = new HashMap<Integer, int[]>();
 		this.roles = new HashMap<String, Integer>();
+
+		lookup = new DdragonLookup("10.10.1");
 	
 		calculateWinRate();
 		calculateLoseStreakAndRole();
+	}
 
+	public Image getProfileIcon() throws IOException {
+		return lookup.getProfileIcon(profileIcon);
 	}
 
 	public boolean shouldIdodge() {
@@ -62,22 +68,7 @@ public class Champion {
 	public String getMainRole() {
 		return mainRole;
 	}
-	public Image getProfileIcon() {
-		Image image = null;
-		try {
-			StringBuilder sb = new StringBuilder(); 
-			sb.append("http://ddragon.leagueoflegends.com/cdn/");
-			sb.append(client.getPatch());
-			sb.append("/img/profileicon/");
-			sb.append(profileIcon);
-			sb.append(".png");
-		    URL url = new URL(sb.toString());
-		    System.out.println(sb.toString());
-		    image = ImageIO.read(url);
-		} catch (IOException e) {
-		}
-		return image;
-	}
+
 
 	public void calculateWinRate() throws ApiException {
 		List<ApiValue> ranked = client.getLeagues(ID);
