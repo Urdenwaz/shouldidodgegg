@@ -31,12 +31,13 @@ public class Main {
     	LobbyInput Lobby = new LobbyInput(client);
 //    	summonerExample();
     	Champion user1 = Lobby.getChampion("magikulhobo");
+    	
     	System.out.println(user1.getWinrate());
     	System.out.println(user1.getLoseStreak());
     	System.out.println(user1.shouldIdodge());
     	System.out.println(user1.firstTime(50));
     	System.out.println(user1.getMainRole());
-    	user1.isEGirl();
+    	System.out.println("is she a egirl:" + user1.isEGirl());
     }
    
     public static void championLookupExample() throws ApiException {

@@ -174,10 +174,19 @@ public class Champion {
 
 	public boolean isEGirl() throws ApiException {
 		JsonArray masteries = client.getChampions(ID);
+		int counter = 0; 
+		int EgirlChamps = 0;
 		for(JsonElement i: masteries) {
-			System.out.println(i.getAsJsonObject().get("championId").getAsInt());
+			counter++;
+			int currentChampionID = i.getAsJsonObject().get("championId").getAsInt();
+			if(currentChampionID  == 350 || currentChampionID == 16 || currentChampionID == 267 || currentChampionID == 25 || currentChampionID == 40 || currentChampionID == 99 || currentChampionID == 117 || currentChampionID == 37) {
+				EgirlChamps++;
+			}
+			if(counter > 4) {
+				break;
+			}
 		}
-		return false;
+		return (counter-EgirlChamps <= 2);
 	}
 	/*
 	 * ApiClient client = new ApiClient(ENDPOINT, ApiClient.loadKey("key.txt"));
