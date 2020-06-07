@@ -21,7 +21,7 @@ public class DdragonLookup {
     OkHttpClient http;
 
     // See http://ddragon.leagueoflegends.com/cdn/6.24.1/data/en_US/champion.json
-    // Needs raw champion list for Champion Key lookup
+    // Needs raw champion list for Summoner Key lookup
     public DdragonLookup(String patch) throws ApiException {
         this(patch, new GsonBuilder().setPrettyPrinting().create(), new JsonParser(),
                 new OkHttpClient());

@@ -13,7 +13,7 @@ import com.google.gson.*;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 
-public class Champion {
+public class Summoner {
 
 	private boolean dodge;
 	private float winrate;
@@ -30,7 +30,7 @@ public class Champion {
 	private int profileIcon;
 	private DdragonLookup lookup;
 
-	public Champion(String ID, String accountID, String puuID, String name, int profileIcon, ApiClient client)
+	public Summoner(String ID, String accountID, String puuID, String name, int profileIcon, ApiClient client)
 			throws IOException, ApiException {
 		this.accountID = accountID;
 		this.ID = ID;
@@ -53,7 +53,6 @@ public class Champion {
 	}
 
 	public boolean shouldIdodge() {
-
 		return loseStreak > 3 || (winrate <= 0.45 && games > 40);
 	}
 
@@ -213,6 +212,11 @@ public class Champion {
 		}
 		//System.out.println(EgirlChamps+" "+counter);
 		return (counter-EgirlChamps <= 2);
+	}
+
+	@Override
+	public String toString() {
+		return name;
 	}
 	/*
 	 * ApiClient client = new ApiClient(ENDPOINT, ApiClient.loadKey("key.txt"));

@@ -1,11 +1,7 @@
 package ibcompsci.urdenwaz.shouldidodge;
 
-import ibcompsci.urdenwaz.shouldidodge.engine.ApiClient;
-import ibcompsci.urdenwaz.shouldidodge.engine.ApiException;
-import ibcompsci.urdenwaz.shouldidodge.engine.ApiValue;
-import ibcompsci.urdenwaz.shouldidodge.engine.Champion;
-import ibcompsci.urdenwaz.shouldidodge.engine.DdragonLookup;
-import ibcompsci.urdenwaz.shouldidodge.engine.LobbyInput;
+import ibcompsci.urdenwaz.shouldidodge.engine.*;
+import ibcompsci.urdenwaz.shouldidodge.engine.Summoner;
 import ibcompsci.urdenwaz.shouldidodge.ui.MainUI;
 
 import javax.swing.JFrame;
@@ -23,9 +19,9 @@ public class Main {
     //todo UI
     //todo algorithm
     public static void main(String[] args) throws Exception {
-        JFrame frame = new MainUI("ShouldIDodge.gg");
+        ApiClient client = new ApiClient(ENDPOINT, ApiClient.loadKey("key.txt"));
+        JFrame frame = new MainUI("ShouldIDodge.gg", client);
         frame.setVisible(true);
-
     }
    
     public static void championLookupExample() throws ApiException {
@@ -65,7 +61,7 @@ public class Main {
         ApiClient client = new ApiClient(ENDPOINT, ApiClient.loadKey("key.txt"));
         LobbyInput Lobby = new LobbyInput(client);
 //    	summonerExample();
-        Champion user1 = Lobby.getChampion("a j o s n 8");
+        Summoner user1 = Lobby.getChampion("a j o s n 8");
 
         System.out.println(user1.getWinrate());
         System.out.println(user1.getLoseStreak());
