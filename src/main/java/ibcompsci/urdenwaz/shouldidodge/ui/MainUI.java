@@ -1,18 +1,25 @@
 package ibcompsci.urdenwaz.shouldidodge.ui;
 
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.Rectangle;
+
+import javax.swing.JButton;
+import javax.swing.JComponent;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JSplitPane;
+import javax.swing.JTextField;
+
 import ibcompsci.urdenwaz.shouldidodge.engine.ApiClient;
-import ibcompsci.urdenwaz.shouldidodge.engine.ApiException;
-import ibcompsci.urdenwaz.shouldidodge.engine.Summoner;
-import ibcompsci.urdenwaz.shouldidodge.engine.LobbyInput;
+import ibcompsci.urdenwaz.shouldidodge.objects.FontGenerator;
+import ibcompsci.urdenwaz.shouldidodge.objects.InteractivePanel;
+import ibcompsci.urdenwaz.shouldidodge.objects.Toolbar;
 
-import javax.swing.*;
-import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.io.IOException;
-import java.util.Arrays;
-
-public class MainUI extends JFrame implements ActionListener {
+public class MainUI extends JFrame {
+	
+	private ApiClient client;
 
     private JButton dodgeButton;
     private JLabel appNameLabel;
@@ -48,60 +55,124 @@ public class MainUI extends JFrame implements ActionListener {
     private JTextField supSummonerField;
     private JTextField supChampField;
 
-    private LobbyInput li;
-
-    public MainUI(String name, ApiClient client) throws ApiException, IOException {
+    // Width should be AT LEAST 400. Recommended 500-750.
+    private final int SCREEN_WIDTH = 500;
+    private final int SCREEN_HEIGHT = 750;
+    
+    private Rectangle[] mainFields;
+    private JPanel[] mainPanels;
+    
+    private int mouseX;
+    private int mouseY;
+    
+    public MainUI(String name, ApiClient client) {
         super(name);
-
-        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        this.setContentPane(mainUIPanel);
-        this.setSize(new Dimension(1000, 1000));
-        this.pack();
-
-        li = new LobbyInput(client);
-
-        dodgeButton.addActionListener(this);
+        this.client = client;
+        init();
     }
-
-    // Order:
-    // [0] = Top
-    // [1] = Jungle
-    // [2] = Middle
-    // [3] = Bottom
-    // [4] = Support
-    @Override
-    public void actionPerformed(ActionEvent e) {
-        try {
-            Summoner[] summonerLobby = {li.getChampion(topSummonerField.getText()),
-                    li.getChampion(jungSummonerField.getText()),
-                    li.getChampion(midSummonerField.getText()),
-                    li.getChampion(botSummonerField.getText()),
-                    li.getChampion(supSummonerField.getText())};
-
-            System.out.println(Arrays.toString(summonerLobby));
-            int dodgeCount = 0;
-            for (Summoner c : summonerLobby) {
-                if (c.shouldIdodge()) {
-                    dodgeCount++;
-                    System.out.println(c);
-                }
-            }
-
-            if (dodgeCount >= 3) {
-                JOptionPane.showMessageDialog(null, "Dodge this game.");
-            } else {
-                JOptionPane.showMessageDialog(null, "Coast is clear, you're free to go.");
-            }
-        } catch (IOException | ApiException ex) {
-            ex.printStackTrace();
-        }
+    
+    public void init() {
+//    	setUndecorated(true);
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setBounds(new Rectangle(100, 100, SCREEN_WIDTH, SCREEN_HEIGHT));
+		setUndecorated(true);
+		
+		setBackground(new java.awt.Color(255, 255, 255, 255));
+		
+		mainUIPanel = new JPanel();
+		
+		setContentPane(mainUIPanel);
+		mainUIPanel.setLayout(null);
+		mainUIPanel.setBackground(Color.WHITE);
+		mainUIPanel.setBorder(new javax.swing.border.LineBorder(Color.BLACK));
+		
+		/// dimensions for title, player, and button fields indexed at 0,1,2 respectively.
+		mainFields = getMainFields();
+		mainPanels = getMainPanels();
+		
+		
+		mainPanels[0].addMouseListener(new java.awt.event.MouseAdapter() {
+			@Override
+			public void mousePressed(java.awt.event.MouseEvent evt) {
+				framePress(evt);
+			}
+		});
+		mainPanels[0].addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
+			@Override
+			public void mouseDragged(java.awt.event.MouseEvent evt) {
+				frameDrag(evt);
+			}
+		});
+		
+		
+		
+    }
+    
+    private Rectangle[] getMainFields() {
+    	int tbHeight = 20; // toolbar height
+    	return new Rectangle[] {
+    			new Rectangle(0, 0, SCREEN_WIDTH, tbHeight),
+    			new Rectangle(0, tbHeight, SCREEN_WIDTH, (SCREEN_HEIGHT-tbHeight)*1/10+1), // graphics start from top left.
+    			new Rectangle(0, SCREEN_HEIGHT*1/10+tbHeight, SCREEN_WIDTH, (SCREEN_HEIGHT-tbHeight)*9/10+1)
+    		};
+    }
+    
+    private JPanel[] getMainPanels() {
+    	JPanel[] ret = new JPanel[mainFields.length];
+    	
+    	JPanel r;
+    	
+    	// toolbar panel
+    	r = new Toolbar(this);
+    	r.setBackground(Color.BLACK);
+    	
+    	ret[0] = r;
+    	
+    	// title panel
+    	
+    	r = new JPanel();
+    	r.setOpaque(true);
+    	r.setBorder(new javax.swing.border.LineBorder(Color.BLACK));
+    	
+    	JLabel testLabel = new JLabel("ShouldIDodge.GG");
+		testLabel.setFont(FontGenerator.$$$getFont$$$("Comic Sans MS", -1, 48, testLabel.getFont()));
+		r.add(testLabel);
+		
+    	ret[1] = r;
+    	
+    	// Interactive panel
+    	
+    	InteractivePanel ip = new InteractivePanel(client);
+    	ret[2] = ip;
+    	
+    	// standardized formatting of panels
+		for (int i = 0; i < mainFields.length; i++) {
+			ret[i].setBounds(mainFields[i]);
+			ret[i].setBorder(new javax.swing.border.LineBorder(Color.BLACK));
+			ret[i].setOpaque(true);
+			mainUIPanel.add(ret[i]);
+		}
+		
+		return ret;
     }
 
     {
 // GUI initializer generated by IntelliJ IDEA GUI Designer
 // >>> IMPORTANT!! <<<
 // DO NOT EDIT OR ADD ANY CODE HERE!
-        $$$setupUI$$$();
+//        $$$setupUI$$$();
+    }
+    
+    public void frameDrag(java.awt.event.MouseEvent evt) {
+    	int x = evt.getXOnScreen();
+    	int y = evt.getYOnScreen();
+    	
+    	this.setLocation(x - mouseX, y - mouseY);
+    }
+    
+    public void framePress(java.awt.event.MouseEvent evt) {
+    	mouseX = evt.getX();
+    	mouseY = evt.getY();
     }
 
     /**
@@ -112,100 +183,100 @@ public class MainUI extends JFrame implements ActionListener {
      * @noinspection ALL
      */
     private void $$$setupUI$$$() {
-        mainUIPanel = new JPanel();
-        mainUIPanel.setLayout(new com.intellij.uiDesigner.core.GridLayoutManager(12, 1, new Insets(0, 0, 0, 0), -1, -1));
-        appNameLabel = new JLabel();
-        Font appNameLabelFont = this.$$$getFont$$$("Comic Sans MS", -1, 48, appNameLabel.getFont());
-        if (appNameLabelFont != null) appNameLabel.setFont(appNameLabelFont);
-        appNameLabel.setText("ShouldIDodge.GG");
-        mainUIPanel.add(appNameLabel, new com.intellij.uiDesigner.core.GridConstraints(0, 0, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_NORTH, com.intellij.uiDesigner.core.GridConstraints.FILL_NONE, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-        dodgeButton = new JButton();
-        dodgeButton.setText("Should I Dodge?");
-        mainUIPanel.add(dodgeButton, new com.intellij.uiDesigner.core.GridConstraints(11, 0, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_CENTER, com.intellij.uiDesigner.core.GridConstraints.FILL_NONE, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_SHRINK | com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-        topSplitPane = new JSplitPane();
-        topSplitPane.setEnabled(false);
-        mainUIPanel.add(topSplitPane, new com.intellij.uiDesigner.core.GridConstraints(1, 0, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_CENTER, com.intellij.uiDesigner.core.GridConstraints.FILL_BOTH, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_SHRINK | com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_SHRINK | com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_GROW, null, new Dimension(100, 100), null, 0, false));
-        topLabel = new JLabel();
-        topLabel.setHorizontalAlignment(0);
-        topLabel.setText("Top Summoner");
-        topSplitPane.setLeftComponent(topLabel);
-        topSummonerField = new JTextField();
-        topSummonerField.setHorizontalAlignment(2);
-        topSplitPane.setRightComponent(topSummonerField);
-        topChampPane = new JSplitPane();
-        mainUIPanel.add(topChampPane, new com.intellij.uiDesigner.core.GridConstraints(2, 0, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_CENTER, com.intellij.uiDesigner.core.GridConstraints.FILL_BOTH, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_SHRINK | com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_SHRINK | com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_GROW, null, new Dimension(200, 200), null, 0, false));
-        topChampLabel = new JLabel();
-        topChampLabel.setHorizontalAlignment(0);
-        topChampLabel.setHorizontalTextPosition(10);
-        topChampLabel.setText("Top Champion");
-        topChampPane.setLeftComponent(topChampLabel);
-        topChampField = new JTextField();
-        topChampPane.setRightComponent(topChampField);
-        jungSplitPane = new JSplitPane();
-        mainUIPanel.add(jungSplitPane, new com.intellij.uiDesigner.core.GridConstraints(3, 0, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_CENTER, com.intellij.uiDesigner.core.GridConstraints.FILL_BOTH, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_SHRINK | com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_SHRINK | com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_GROW, null, new Dimension(200, 200), null, 0, false));
-        jungLabel = new JLabel();
-        jungLabel.setHorizontalAlignment(0);
-        jungLabel.setText("Jungle Summoner");
-        jungSplitPane.setLeftComponent(jungLabel);
-        jungSummonerField = new JTextField();
-        jungSplitPane.setRightComponent(jungSummonerField);
-        jungleChampPane = new JSplitPane();
-        mainUIPanel.add(jungleChampPane, new com.intellij.uiDesigner.core.GridConstraints(4, 0, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_CENTER, com.intellij.uiDesigner.core.GridConstraints.FILL_BOTH, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_SHRINK | com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_SHRINK | com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_GROW, null, new Dimension(200, 200), null, 0, false));
-        jungChampLabel = new JLabel();
-        jungChampLabel.setHorizontalAlignment(0);
-        jungChampLabel.setText("Jungle Champion");
-        jungleChampPane.setLeftComponent(jungChampLabel);
-        jungChampField = new JTextField();
-        jungleChampPane.setRightComponent(jungChampField);
-        midPane = new JSplitPane();
-        mainUIPanel.add(midPane, new com.intellij.uiDesigner.core.GridConstraints(5, 0, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_CENTER, com.intellij.uiDesigner.core.GridConstraints.FILL_BOTH, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_SHRINK | com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_SHRINK | com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_GROW, null, new Dimension(200, 200), null, 0, false));
-        midLabel = new JLabel();
-        midLabel.setHorizontalAlignment(0);
-        midLabel.setText("Middle Summoner");
-        midPane.setLeftComponent(midLabel);
-        midSummonerField = new JTextField();
-        midPane.setRightComponent(midSummonerField);
-        midChampPane = new JSplitPane();
-        mainUIPanel.add(midChampPane, new com.intellij.uiDesigner.core.GridConstraints(6, 0, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_CENTER, com.intellij.uiDesigner.core.GridConstraints.FILL_BOTH, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_SHRINK | com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_SHRINK | com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_GROW, null, new Dimension(200, 200), null, 0, false));
-        midChampLabel = new JLabel();
-        midChampLabel.setHorizontalAlignment(0);
-        midChampLabel.setText("Middle Champion");
-        midChampPane.setLeftComponent(midChampLabel);
-        midChampField = new JTextField();
-        midChampPane.setRightComponent(midChampField);
-        botPane = new JSplitPane();
-        mainUIPanel.add(botPane, new com.intellij.uiDesigner.core.GridConstraints(7, 0, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_CENTER, com.intellij.uiDesigner.core.GridConstraints.FILL_BOTH, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_SHRINK | com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_SHRINK | com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_GROW, null, new Dimension(200, 200), null, 0, false));
-        botLabel = new JLabel();
-        botLabel.setHorizontalAlignment(0);
-        botLabel.setText("Bottom Summoner");
-        botPane.setLeftComponent(botLabel);
-        botSummonerField = new JTextField();
-        botPane.setRightComponent(botSummonerField);
-        botChampPane = new JSplitPane();
-        mainUIPanel.add(botChampPane, new com.intellij.uiDesigner.core.GridConstraints(8, 0, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_CENTER, com.intellij.uiDesigner.core.GridConstraints.FILL_BOTH, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_SHRINK | com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_SHRINK | com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_GROW, null, new Dimension(200, 200), null, 0, false));
-        botChampLabel = new JLabel();
-        botChampLabel.setHorizontalAlignment(0);
-        botChampLabel.setText("Bottom Champion");
-        botChampPane.setLeftComponent(botChampLabel);
-        botChampField = new JTextField();
-        botChampField.setText("");
-        botChampPane.setRightComponent(botChampField);
-        supPane = new JSplitPane();
-        mainUIPanel.add(supPane, new com.intellij.uiDesigner.core.GridConstraints(9, 0, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_CENTER, com.intellij.uiDesigner.core.GridConstraints.FILL_BOTH, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_SHRINK | com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_SHRINK | com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_GROW, null, new Dimension(200, 200), null, 0, false));
-        supLabel = new JLabel();
-        supLabel.setHorizontalAlignment(0);
-        supLabel.setText("Support Summoner");
-        supPane.setLeftComponent(supLabel);
-        supSummonerField = new JTextField();
-        supPane.setRightComponent(supSummonerField);
-        supChampPane = new JSplitPane();
-        mainUIPanel.add(supChampPane, new com.intellij.uiDesigner.core.GridConstraints(10, 0, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_CENTER, com.intellij.uiDesigner.core.GridConstraints.FILL_BOTH, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_SHRINK | com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_SHRINK | com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_GROW, null, new Dimension(200, 200), null, 0, false));
-        supChampLabel = new JLabel();
-        supChampLabel.setHorizontalAlignment(0);
-        supChampLabel.setText("Support Champion");
-        supChampPane.setLeftComponent(supChampLabel);
-        supChampField = new JTextField();
-        supChampPane.setRightComponent(supChampField);
+//        mainUIPanel = new JPanel();
+//        mainUIPanel.setLayout(new com.intellij.uiDesigner.core.GridLayoutManager(12, 1, new Insets(0, 0, 0, 0), -1, -1));
+//        appNameLabel = new JLabel();
+//        Font appNameLabelFont = this.$$$getFont$$$("Comic Sans MS", -1, 48, appNameLabel.getFont());
+//        if (appNameLabelFont != null) appNameLabel.setFont(appNameLabelFont);
+//        appNameLabel.setText("ShouldIDodge.GG");
+//        mainUIPanel.add(appNameLabel, new com.intellij.uiDesigner.core.GridConstraints(0, 0, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_NORTH, com.intellij.uiDesigner.core.GridConstraints.FILL_NONE, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+//        dodgeButton = new JButton();
+//        dodgeButton.setText("Should I Dodge?");
+//        mainUIPanel.add(dodgeButton, new com.intellij.uiDesigner.core.GridConstraints(11, 0, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_CENTER, com.intellij.uiDesigner.core.GridConstraints.FILL_NONE, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_SHRINK | com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+//        topSplitPane = new JSplitPane();
+//        topSplitPane.setEnabled(false);
+//        mainUIPanel.add(topSplitPane, new com.intellij.uiDesigner.core.GridConstraints(1, 0, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_CENTER, com.intellij.uiDesigner.core.GridConstraints.FILL_BOTH, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_SHRINK | com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_SHRINK | com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_GROW, null, new Dimension(100, 100), null, 0, false));
+//        topLabel = new JLabel();
+//        topLabel.setHorizontalAlignment(0);
+//        topLabel.setText("Top Summoner");
+//        topSplitPane.setLeftComponent(topLabel);
+//        topSummonerField = new JTextField();
+//        topSummonerField.setHorizontalAlignment(2);
+//        topSplitPane.setRightComponent(topSummonerField);
+//        topChampPane = new JSplitPane();
+//        mainUIPanel.add(topChampPane, new com.intellij.uiDesigner.core.GridConstraints(2, 0, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_CENTER, com.intellij.uiDesigner.core.GridConstraints.FILL_BOTH, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_SHRINK | com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_SHRINK | com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_GROW, null, new Dimension(200, 200), null, 0, false));
+//        topChampLabel = new JLabel();
+//        topChampLabel.setHorizontalAlignment(0);
+//        topChampLabel.setHorizontalTextPosition(10);
+//        topChampLabel.setText("Top Champion");
+//        topChampPane.setLeftComponent(topChampLabel);
+//        topChampField = new JTextField();
+//        topChampPane.setRightComponent(topChampField);
+//        jungSplitPane = new JSplitPane();
+//        mainUIPanel.add(jungSplitPane, new com.intellij.uiDesigner.core.GridConstraints(3, 0, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_CENTER, com.intellij.uiDesigner.core.GridConstraints.FILL_BOTH, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_SHRINK | com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_SHRINK | com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_GROW, null, new Dimension(200, 200), null, 0, false));
+//        jungLabel = new JLabel();
+//        jungLabel.setHorizontalAlignment(0);
+//        jungLabel.setText("Jungle Summoner");
+//        jungSplitPane.setLeftComponent(jungLabel);
+//        jungSummonerField = new JTextField();
+//        jungSplitPane.setRightComponent(jungSummonerField);
+//        jungleChampPane = new JSplitPane();
+//        mainUIPanel.add(jungleChampPane, new com.intellij.uiDesigner.core.GridConstraints(4, 0, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_CENTER, com.intellij.uiDesigner.core.GridConstraints.FILL_BOTH, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_SHRINK | com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_SHRINK | com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_GROW, null, new Dimension(200, 200), null, 0, false));
+//        jungChampLabel = new JLabel();
+//        jungChampLabel.setHorizontalAlignment(0);
+//        jungChampLabel.setText("Jungle Champion");
+//        jungleChampPane.setLeftComponent(jungChampLabel);
+//        jungChampField = new JTextField();
+//        jungleChampPane.setRightComponent(jungChampField);
+//        midPane = new JSplitPane();
+//        mainUIPanel.add(midPane, new com.intellij.uiDesigner.core.GridConstraints(5, 0, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_CENTER, com.intellij.uiDesigner.core.GridConstraints.FILL_BOTH, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_SHRINK | com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_SHRINK | com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_GROW, null, new Dimension(200, 200), null, 0, false));
+//        midLabel = new JLabel();
+//        midLabel.setHorizontalAlignment(0);
+//        midLabel.setText("Middle Summoner");
+//        midPane.setLeftComponent(midLabel);
+//        midSummonerField = new JTextField();
+//        midPane.setRightComponent(midSummonerField);
+//        midChampPane = new JSplitPane();
+//        mainUIPanel.add(midChampPane, new com.intellij.uiDesigner.core.GridConstraints(6, 0, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_CENTER, com.intellij.uiDesigner.core.GridConstraints.FILL_BOTH, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_SHRINK | com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_SHRINK | com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_GROW, null, new Dimension(200, 200), null, 0, false));
+//        midChampLabel = new JLabel();
+//        midChampLabel.setHorizontalAlignment(0);
+//        midChampLabel.setText("Middle Champion");
+//        midChampPane.setLeftComponent(midChampLabel);
+//        midChampField = new JTextField();
+//        midChampPane.setRightComponent(midChampField);
+//        botPane = new JSplitPane();
+//        mainUIPanel.add(botPane, new com.intellij.uiDesigner.core.GridConstraints(7, 0, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_CENTER, com.intellij.uiDesigner.core.GridConstraints.FILL_BOTH, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_SHRINK | com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_SHRINK | com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_GROW, null, new Dimension(200, 200), null, 0, false));
+//        botLabel = new JLabel();
+//        botLabel.setHorizontalAlignment(0);
+//        botLabel.setText("Bottom Summoner");
+//        botPane.setLeftComponent(botLabel);
+//        botSummonerField = new JTextField();
+//        botPane.setRightComponent(botSummonerField);
+//        botChampPane = new JSplitPane();
+//        mainUIPanel.add(botChampPane, new com.intellij.uiDesigner.core.GridConstraints(8, 0, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_CENTER, com.intellij.uiDesigner.core.GridConstraints.FILL_BOTH, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_SHRINK | com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_SHRINK | com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_GROW, null, new Dimension(200, 200), null, 0, false));
+//        botChampLabel = new JLabel();
+//        botChampLabel.setHorizontalAlignment(0);
+//        botChampLabel.setText("Bottom Champion");
+//        botChampPane.setLeftComponent(botChampLabel);
+//        botChampField = new JTextField();
+//        botChampField.setText("");
+//        botChampPane.setRightComponent(botChampField);
+//        supPane = new JSplitPane();
+//        mainUIPanel.add(supPane, new com.intellij.uiDesigner.core.GridConstraints(9, 0, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_CENTER, com.intellij.uiDesigner.core.GridConstraints.FILL_BOTH, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_SHRINK | com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_SHRINK | com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_GROW, null, new Dimension(200, 200), null, 0, false));
+//        supLabel = new JLabel();
+//        supLabel.setHorizontalAlignment(0);
+//        supLabel.setText("Support Summoner");
+//        supPane.setLeftComponent(supLabel);
+//        supSummonerField = new JTextField();
+//        supPane.setRightComponent(supSummonerField);
+//        supChampPane = new JSplitPane();
+//        mainUIPanel.add(supChampPane, new com.intellij.uiDesigner.core.GridConstraints(10, 0, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_CENTER, com.intellij.uiDesigner.core.GridConstraints.FILL_BOTH, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_SHRINK | com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_SHRINK | com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_GROW, null, new Dimension(200, 200), null, 0, false));
+//        supChampLabel = new JLabel();
+//        supChampLabel.setHorizontalAlignment(0);
+//        supChampLabel.setText("Support Champion");
+//        supChampPane.setLeftComponent(supChampLabel);
+//        supChampField = new JTextField();
+//        supChampPane.setRightComponent(supChampField);
     }
 
     /**

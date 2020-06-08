@@ -2,6 +2,7 @@ package ibcompsci.urdenwaz.shouldidodge;
 
 import ibcompsci.urdenwaz.shouldidodge.engine.*;
 import ibcompsci.urdenwaz.shouldidodge.engine.Summoner;
+import ibcompsci.urdenwaz.shouldidodge.objects.User;
 import ibcompsci.urdenwaz.shouldidodge.ui.MainUI;
 
 import javax.swing.JFrame;
@@ -20,6 +21,7 @@ public class Main {
     //todo algorithm
     public static void main(String[] args) throws Exception {
         ApiClient client = new ApiClient(ENDPOINT, ApiClient.loadKey("key.txt"));
+        User.__init__(PATCH);
         JFrame frame = new MainUI("ShouldIDodge.gg", client);
         frame.setVisible(true);
     }
