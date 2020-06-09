@@ -4,38 +4,54 @@ import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Image;
 import java.awt.Rectangle;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.StringTokenizer;
 
+import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JTextArea;
 
 import ibcompsci.urdenwaz.shouldidodge.engine.ApiException;
 import ibcompsci.urdenwaz.shouldidodge.engine.DdragonLookup;
+import ibcompsci.urdenwaz.shouldidodge.engine.Summoner;
+import ibcompsci.urdenwaz.shouldidodge.resources.FontGenerator;
+import ibcompsci.urdenwaz.shouldidodge.resources.ImageModifier;
 
 public class User extends JPanel {
 	
-	private Image summonerIcon;
+	private Summoner summoner;
+	
+	private ImageIcon summonerIcon;
 	private JLabel iconBox;
 	
-	private String summonerName = "Urdenwaz";
-	private JLabel nameLabel;
+	private String summonerName = " ";
+	private JTextArea nameArea;
 	
 	private JComboBox champion;
 	private JLabel champLabel;
 	private JComboBox role;
 	private JLabel roleLabel;
 	
+	private static final int margin = 10;
 	private JLabel verdictBox;
+	private boolean dodge;
 	
+	private static Font sansBig;
+	private static Font sans;
+	
+	private static ImageIcon confirm;
+	private static ImageIcon deny;
 	
 	private static String[] championList;
 	private static String[] roleList = {
 			"", "top", "jungler", "mid", "bot", "support"
 	};
-	
 	
 	public static void __init__(String PATCH) throws ApiException {
 		DdragonLookup lookup = new DdragonLookup(PATCH);
@@ -80,11 +96,57 @@ public class User extends JPanel {
 		
 	}
 	
+	public void inputData(String s, Summoner summoner) {
+		
+		if (summoner == this.summoner) return; 
+		
+		this.summoner = summoner;
+		
+		summonerName = s;
+		
+		nameArea.setText(summonerName);
+		FontMetrics fm = nameArea.getFontMetrics(sansBig);
+		nameArea.setFont(sansBig);
+		nameArea.setBounds(iconBox.getX() + iconBox.getWidth() + 5,
+				(getBounds().height-fm.getHeight())/2,
+				getBounds().width/2 - iconBox.getWidth() - margin*2,
+				fm.getHeight());
+		
+		if (summoner != null) {
+			try {
+				Image summonerImage = summoner.getProfileIcon();
+				summonerIcon = new ImageIcon(
+						ImageModifier.resizeImage(summonerImage, iconBox.getWidth(), iconBox.getHeight())
+						);
+				iconBox.setIcon(summonerIcon);
+			} catch (IOException e) {}
+		}
+		
+		
+	}
+	
+	public static void initUser(Rectangle r) {
+		Image confirmImage = null;
+		Image denyImage = null;
+		
+		try {
+			confirmImage = ImageIO.read(new File("src/main/java/ibcompsci/urdenwaz/shouldidodge/resources/check.png"));
+			denyImage = ImageIO.read(new File("src/main/java/ibcompsci/urdenwaz/shouldidodge/resources/cancel.png"));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		int boxSide = r.height - 2*margin;
+		
+		confirm = new ImageIcon(
+				ImageModifier.resizeImage(confirmImage, boxSide, boxSide));
+		deny = new ImageIcon(
+				ImageModifier.resizeImage(denyImage, boxSide, boxSide));
+	}
+	
 	@Override
 	public void setBounds(Rectangle r) {
 		super.setBounds(r);
-		
-		int margin = 10;
 		
 		// area for the summoner icon to go into
 		iconBox = new JLabel();
@@ -93,23 +155,21 @@ public class User extends JPanel {
 		add(iconBox);
 		
 		// summoner name
-		nameLabel = new JLabel();
-		nameLabel.setText(summonerName);
-		Font sansBig = FontGenerator.$$$getFont$$$("Comic Sans MS", -1, 20, nameLabel.getFont());
-		FontMetrics fm = nameLabel.getFontMetrics(sansBig);
-		nameLabel.setFont(sansBig);
-		nameLabel.setBounds(iconBox.getX() + iconBox.getWidth() + 5, (r.height-fm.getHeight())/2, fm.stringWidth(summonerName), fm.getHeight());
-		add(nameLabel);
+		nameArea = new JTextArea();
+		sansBig = FontGenerator.$$$getFont$$$("Comic Sans MS", -1, 20, nameArea.getFont());
+		nameArea.setEditable(true);
+		nameArea.setOpaque(false);
 		
+		add(nameArea);
 		
 		Rectangle b = getBounds();
 		
 		// dropdown boxes
 		
 		roleLabel = new JLabel("Role");
-		Font sans = FontGenerator.$$$getFont$$$("Comic Sans MS", -1, 12, nameLabel.getFont());
+		sans = FontGenerator.$$$getFont$$$("Comic Sans MS", -1, 12, nameArea.getFont());
 		roleLabel.setFont(sans);
-		fm = roleLabel.getFontMetrics(sans);
+		FontMetrics fm = roleLabel.getFontMetrics(sans);
 		roleLabel.setBounds(b.width/2, b.height/4 - fm.getHeight(), fm.stringWidth(roleLabel.getText()), fm.getHeight());
 		
 		add(roleLabel);
@@ -127,13 +187,36 @@ public class User extends JPanel {
 		champion.setFont(sans);
 		add(champion);
 		
-		
 		// verdict box
+		int boxSize = r.height - 2*margin;
 		verdictBox = new JLabel();
-		verdictBox.setBounds(r.width - r.height + margin, margin, r.height - 2*margin, r.height - 2*margin);
-		verdictBox.setBorder(new javax.swing.border.LineBorder(java.awt.Color.BLACK));
+		verdictBox.setBounds(r.width - r.height + margin, margin, boxSize, boxSize);
+		
 		add(verdictBox);
 		
+	}
+	
+	public void reset() {
+		verdictBox.setIcon(null);
+		setBackground(null);
+	}
+	
+	public void dodge(boolean ishoulddodge) {
+		
+		if (ishoulddodge) {
+			verdictBox.setIcon(deny);
+			System.out.print(" dodged");
+			setBackground(java.awt.Color.PINK);
+		} else {
+			verdictBox.setIcon(confirm);
+			setBackground(java.awt.Color.CYAN);
+		}
+		dodge = ishoulddodge;
+	}
+
+	
+	public String getSummonerName() {
+		return nameArea.getText();
 	}
 	
 }

@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Scanner;
 
 public class LobbyInput {
+	
     private static final String ENDPOINT = "na1.api.riotgames.com";
 	ApiClient client;
 	public LobbyInput(ApiClient client) throws IOException {
@@ -36,12 +37,18 @@ public class LobbyInput {
 			}
 			name.append(name.length() == 0 ? current: " "+current);
 		}
+		
+		sc.close();
+		
 		return res;
  	}
-	public Summoner getChampion(String Username) throws ApiException, IOException {
-		ApiValue user = client.getSummoner(Username);
-		
-		return new Summoner(user.get("id"),user.get("accountId"),user.get("puuid"), user.get("name"), user.getRawJsonObject().get("profileIconId").getAsInt(), client);
+	public Summoner getChampion(String Username) {
+		try {
+			ApiValue user = client.getSummoner(Username);
+			return new Summoner(user.get("id"),user.get("accountId"),user.get("puuid"), user.get("name"), user.getRawJsonObject().get("profileIconId").getAsInt(), client);
+		} catch (ApiException | IOException | NullPointerException e ) {
+			return null;
+		}
 	}
 	
 }

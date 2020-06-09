@@ -1,4 +1,4 @@
-package ibcompsci.urdenwaz.shouldidodge.objects;
+package ibcompsci.urdenwaz.shouldidodge.resources;
 
 import java.awt.Font;
 

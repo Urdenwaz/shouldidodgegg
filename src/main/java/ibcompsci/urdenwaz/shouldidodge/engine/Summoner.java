@@ -67,6 +67,9 @@ public class Summoner {
 	public String getMainRole() {
 		return mainRole;
 	}
+	public String getName() {
+		return name;
+	}
 
 
 	public void calculateWinRate() throws ApiException {
@@ -124,6 +127,9 @@ public class Summoner {
 				int ChampionID = i.getAsJsonObject().get("champion").getAsInt();
 				ApiValue match = client.getMatch(i.getAsJsonObject().get("gameId").getAsString());
 				JsonArray participants = match.getJsonArray("participants");
+				if (participants == null) {
+					return;
+				}
 				JsonObject player = null;
 				for (JsonElement j : participants) {
 					if (j.getAsJsonObject().get("championId").getAsInt() == ChampionID) {

@@ -31,7 +31,9 @@ public class DdragonLookup {
         this.gson = gson;
         this.parser = parser;
         this.http = http;
-
+        
+        this.patch = patch;
+        
         championList = getListFromDD();
     }
 
