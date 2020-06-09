@@ -20,7 +20,7 @@ import ibcompsci.urdenwaz.shouldidodge.resources.FontGenerator;
 import ibcompsci.urdenwaz.shouldidodge.resources.ImageModifier;
 
 public class MainUI extends JFrame {
-	
+
 	private ApiClient client;
 
     private JPanel mainUIPanel;
@@ -28,39 +28,39 @@ public class MainUI extends JFrame {
     // Width should be AT LEAST 400. Recommended is around 700 due to 16 character username length.
     private final int SCREEN_WIDTH = 700;
     private final int SCREEN_HEIGHT = 750;
-    
+
     private Rectangle[] mainFields;
     private JPanel[] mainPanels;
-    
+
     private int mouseX;
     private int mouseY;
-    
+
     public MainUI(String name, ApiClient client) {
         super(name);
         this.client = client;
         init();
     }
-    
+
     public void init() {
 //    	setUndecorated(true);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(new Rectangle(100, 100, SCREEN_WIDTH, SCREEN_HEIGHT));
 		setUndecorated(true);
-		
+
 		setBackground(new java.awt.Color(255, 255, 255, 255));
-		
+
 		mainUIPanel = new JPanel();
-		
+
 		setContentPane(mainUIPanel);
 		mainUIPanel.setLayout(null);
 		mainUIPanel.setBackground(Color.WHITE);
 		mainUIPanel.setBorder(new javax.swing.border.LineBorder(Color.BLACK));
-		
+
 		/// dimensions for title, player, and button fields indexed at 0,1,2 respectively.
 		mainFields = getMainFields();
 		mainPanels = getMainPanels();
-		
-		
+
+
 		mainPanels[0].addMouseListener(new java.awt.event.MouseAdapter() {
 			@Override
 			public void mousePressed(java.awt.event.MouseEvent evt) {
@@ -73,11 +73,11 @@ public class MainUI extends JFrame {
 				frameDrag(evt);
 			}
 		});
-		
-		
-		
+
+
+
     }
-    
+
     private Rectangle[] getMainFields() {
     	int tbHeight = 25; // toolbar height
     	return new Rectangle[] {
@@ -86,39 +86,39 @@ public class MainUI extends JFrame {
     			new Rectangle(0, SCREEN_HEIGHT*1/10+tbHeight-2, SCREEN_WIDTH, (SCREEN_HEIGHT-tbHeight)*9/10+1)
     		};
     }
-    
+
     private JPanel[] getMainPanels() {
     	JPanel[] ret = new JPanel[mainFields.length];
-    	
+
     	JPanel r;
-    	
+
     	// toolbar panel
     	r = new Toolbar(this);
     	r.setBackground(Color.BLACK);
-    	
+
     	ret[0] = r;
-    	
+
     	// title panel
-    	
+
     	r = new JPanel();
     	ret[1] = r;
     	r.setLayout(null);
-    	
+
     	// Interactive panel
-    	
+
     	InteractivePanel ip = new InteractivePanel(client);
     	ret[2] = ip;
-    	
+
     	// standardized formatting of panels
 		for (int i = 0; i < mainFields.length; i++) {
 			ret[i].setBounds(mainFields[i]);
 			ret[i].setOpaque(true);
 			mainUIPanel.add(ret[i]);
 		}
-		
-		
+
+
 		// Extra aesthetics
-		
+
     	JLabel label = new JLabel();
     	label.setText("ShouldIDodge.GG");
 		label.setFont(FontGenerator.$$$getFont$$$("Comic Sans MS", -1, 48, label.getFont()));
@@ -127,7 +127,7 @@ public class MainUI extends JFrame {
 		label.setHorizontalAlignment(JLabel.CENTER);
 		label.setOpaque(false);
 		r.add(label);
-		
+
 		label = new JLabel();
 		label.setBounds(0, 0, r.getWidth(), r.getHeight());
 		try {
@@ -136,17 +136,17 @@ public class MainUI extends JFrame {
 					new ImageIcon(ImageModifier.resizeImage(titleImage, ret[1].getWidth(), ret[1].getHeight())));
 		} catch (IOException e) {}
 		r.add(label);
-		
+
 		return ret;
     }
 
     public void frameDrag(java.awt.event.MouseEvent evt) {
     	int x = evt.getXOnScreen();
     	int y = evt.getYOnScreen();
-    	
+
     	this.setLocation(x - mouseX, y - mouseY);
     }
-    
+
     public void framePress(java.awt.event.MouseEvent evt) {
     	mouseX = evt.getX();
     	mouseY = evt.getY();
