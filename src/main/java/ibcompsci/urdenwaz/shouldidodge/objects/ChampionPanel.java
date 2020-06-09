@@ -4,10 +4,11 @@ import java.awt.Rectangle;
 import java.io.IOException;
 import java.util.List;
 
+import javax.swing.BorderFactory;
 import javax.swing.JPanel;
+import javax.swing.border.CompoundBorder;
 
 import ibcompsci.urdenwaz.shouldidodge.engine.ApiClient;
-import ibcompsci.urdenwaz.shouldidodge.engine.ApiException;
 import ibcompsci.urdenwaz.shouldidodge.engine.LobbyInput;
 import ibcompsci.urdenwaz.shouldidodge.engine.Summoner;
 
@@ -25,6 +26,8 @@ public class ChampionPanel extends JPanel {
 	
 	public ChampionPanel(ApiClient client) {
 		this.setLayout(null);
+		
+		setOpaque(false);
 		
 		this.client = client;
 		usernames = new String[5];
@@ -49,7 +52,10 @@ public class ChampionPanel extends JPanel {
 			subBounds[i] = new Rectangle(0, (b.height/n)*i, b.width, b.height/n);
 			u.setBounds(subBounds[i]);
 			u.setBorder(
-					(users[i] == null) ? new javax.swing.border.LineBorder(java.awt.Color.BLACK) : u.getBorder()
+					(users[i] == null) ? new CompoundBorder(
+							BorderFactory.createEmptyBorder(-1,-1,0,-1),
+							BorderFactory.createDashedBorder(java.awt.Color.BLACK, 280, b.width-2*280))
+							: u.getBorder()
 							);
 			users[i] = u;
 			this.add(u);

@@ -2,6 +2,7 @@ package ibcompsci.urdenwaz.shouldidodge.objects;
 
 import java.awt.Font;
 import java.awt.FontMetrics;
+import java.awt.Graphics;
 import java.awt.Rectangle;
 
 import javax.swing.JPanel;
@@ -30,7 +31,7 @@ public class TextListener extends JPanel {
 	
 	public TextListener(Rectangle r) {
 		super.setBounds(0, 0, r.width, r.height);
-		setOpaque(true);
+		setOpaque(false);
 		setBackground(new java.awt.Color(0, 10, 80, 255));
 		setLayout(null);
 		
@@ -59,15 +60,14 @@ public class TextListener extends JPanel {
 		jtp.setEditable(false);
 		jtp.setFont(font);
 		jtp.setOpaque(false);
-		jtp.setForeground(java.awt.Color.WHITE);
 		
 		SimpleAttributeSet attribs = new SimpleAttributeSet();
 		StyleConstants.setAlignment(attribs, StyleConstants.ALIGN_CENTER);
 		jtp.setParagraphAttributes(attribs, false);
 		
-		updateText(start);
-		
 		add(jtp);
+		
+		updateText(start);
 		
 	}
 	
@@ -77,10 +77,12 @@ public class TextListener extends JPanel {
 		double width = fm.stringWidth(s);
 		int lines = (int) Math.ceil(width / r.width);
 		jtp.setBounds(0, (r.height - fm.getHeight()*lines)/2, r.width, fm.getHeight()*lines);
+		jtp.setForeground(java.awt.Color.WHITE);
+		
 	}
 	
 	public void customListener(JPanel listener, Rectangle r) {
-		remove(listener);
+//		remove(listener);
 		
 		jta = new JTextArea();
 		jta.setBounds(10, 10, r.width-20, r.height-20);
@@ -96,12 +98,21 @@ public class TextListener extends JPanel {
 			@Override
 			public void caretUpdate(CaretEvent evt) {
 				
+				java.awt.Color transparent = new java.awt.Color(0, 0, 0, 0);
+				
+				if (evt.getDot() == 0) {
+					jtp.setVisible(false);
+				}
+				
 				if (evt.getDot() + evt.getMark() > 40) {
+					
+					jtp.setVisible(true);
 					jta.update(jta.getGraphics());
+					
 					try {Thread.sleep(1000);} catch (InterruptedException e) {};
+					
 					updateText(confirm);
-					jta.setBounds(0, 0, 1, 1);
-					update(getGraphics());
+					jta.setVisible(false);
 					
 					triggerSwap(jta.getText());
 				}
@@ -117,6 +128,6 @@ public class TextListener extends JPanel {
 	// function inherited from callee object at instantiation point
 	public void triggerSwap(String s) {}
 	
-	
+	public void superUpdate() {}
 
 }

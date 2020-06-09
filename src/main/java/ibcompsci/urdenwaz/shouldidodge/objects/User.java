@@ -1,5 +1,6 @@
 package ibcompsci.urdenwaz.shouldidodge.objects;
 
+import java.awt.Color;
 import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Image;
@@ -42,15 +43,16 @@ public class User extends JPanel {
 	private JLabel verdictBox;
 	private boolean dodge;
 	
-	private static Font sansBig;
-	private static Font sans;
+	private Font sansBig;
+	private Font sans;
+	private Font boldSans;
 	
 	private static ImageIcon confirm;
 	private static ImageIcon deny;
 	
 	private static String[] championList;
 	private static String[] roleList = {
-			"", "top", "jungler", "mid", "bot", "support"
+			"", "Top", "Jungle", "Mid", "ADC", "Support"
 	};
 	
 	public static void __init__(String PATCH) throws ApiException {
@@ -90,6 +92,7 @@ public class User extends JPanel {
 	public User() {
 		
 		setLayout(null);
+		setOpaque(false);
 		
 		champion = new JComboBox(championList);
 		role = new JComboBox(roleList);
@@ -107,7 +110,7 @@ public class User extends JPanel {
 		nameArea.setText(summonerName);
 		FontMetrics fm = nameArea.getFontMetrics(sansBig);
 		nameArea.setFont(sansBig);
-		nameArea.setBounds(iconBox.getX() + iconBox.getWidth() + 5,
+		nameArea.setBounds(iconBox.getX() + iconBox.getWidth() + 15,
 				(getBounds().height-fm.getHeight())/2,
 				getBounds().width/2 - iconBox.getWidth() - margin*2,
 				fm.getHeight());
@@ -148,42 +151,48 @@ public class User extends JPanel {
 	public void setBounds(Rectangle r) {
 		super.setBounds(r);
 		
+		Color gold = new java.awt.Color(200,155,48, 200);
+		
 		// area for the summoner icon to go into
 		iconBox = new JLabel();
 		iconBox.setBounds(margin, margin, r.height-margin*2, r.height-margin*2);
-		iconBox.setBorder(new javax.swing.border.LineBorder(java.awt.Color.BLACK));
+		iconBox.setBorder(new javax.swing.border.LineBorder(gold, 2));
 		add(iconBox);
 		
 		// summoner name
 		nameArea = new JTextArea();
-		sansBig = FontGenerator.$$$getFont$$$("Comic Sans MS", -1, 20, nameArea.getFont());
 		nameArea.setEditable(true);
 		nameArea.setOpaque(false);
+		nameArea.setForeground(Color.WHITE);
 		
 		add(nameArea);
 		
 		Rectangle b = getBounds();
 		
 		// dropdown boxes
+		boldSans = new Font("Comic Sans MS", Font.BOLD, 12);
 		
 		roleLabel = new JLabel("Role");
+		sansBig = FontGenerator.$$$getFont$$$("Comic Sans MS", -1, 20, nameArea.getFont());
 		sans = FontGenerator.$$$getFont$$$("Comic Sans MS", -1, 12, nameArea.getFont());
 		roleLabel.setFont(sans);
 		FontMetrics fm = roleLabel.getFontMetrics(sans);
-		roleLabel.setBounds(b.width/2, b.height/4 - fm.getHeight(), fm.stringWidth(roleLabel.getText()), fm.getHeight());
+		roleLabel.setBounds(b.width/2 + margin, b.height/4 - fm.getHeight(), fm.stringWidth(roleLabel.getText()), fm.getHeight());
+		roleLabel.setForeground(Color.WHITE);
 		
 		add(roleLabel);
 		
-		role.setBounds(b.width/2, b.height/4, b.width/2 - r.height - margin*2, 20);
+		role.setBounds(b.width/2 + margin, b.height/4, b.width/2 - r.height - margin*2, 20);
 		role.setFont(sans);
 		add(role);
 		
 		champLabel = new JLabel("Champion");
 		champLabel.setFont(sans);
-		champLabel.setBounds(b.width/2, b.height*3/4 - fm.getHeight(), fm.stringWidth(champLabel.getText()), fm.getHeight());
+		champLabel.setBounds(b.width/2 + margin, b.height*3/4 - fm.getHeight(), fm.stringWidth(champLabel.getText()), fm.getHeight());
+		champLabel.setForeground(Color.WHITE);
 		add(champLabel);
 		
-		champion.setBounds(b.width/2, b.height*3/4, b.width/2 - r.height - margin*2, 20);
+		champion.setBounds(b.width/2 + margin, b.height*3/4, b.width/2 - r.height - margin*2, 20);
 		champion.setFont(sans);
 		add(champion);
 		

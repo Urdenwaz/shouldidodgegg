@@ -3,6 +3,7 @@ package ibcompsci.urdenwaz.shouldidodge.objects;
 import java.awt.Image;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
+import java.awt.image.RescaleOp;
 import java.io.File;
 import java.io.IOException;
 
@@ -24,6 +25,7 @@ public class InteractivePanel extends JPanel {
 	private JLabel run;
 	private JLabel refresh;
 	
+	private BufferedImage backgroundSource;
 	private JLabel backgroundImage;
 	
 	private TextListener tl;
@@ -33,21 +35,22 @@ public class InteractivePanel extends JPanel {
 	public InteractivePanel(ApiClient client) {
 		setLayout(null);
 		this.client = client;
-		
 	}
 	
 	private void swapPanels() {
+		System.out.println(getComponentCount());
 		if (getComponentCount() == 1) {
 			remove(tl);
-			add(cp);
-			add(run);
-			add(refresh);
+			add(cp, 0);
+			add(run, 0);
+			add(refresh, 0);
 		} else {
 			remove(cp);
 			remove(run);
 			remove(refresh);
 			add(tl);
 		}
+		add(backgroundImage, -1);
 		update(getGraphics());
 	}
 	
@@ -62,22 +65,28 @@ public class InteractivePanel extends JPanel {
 		
 		// background image
 		try {
-			BufferedImage source = ImageIO.read(new File("src/main/java/ibcompsci/urdenwaz/shouldidodge/resources/background2.png"));
-			source = ImageModifier.verticalResize(source, r.width, r.height);
-//			source = ImageModifier.centerCrop(source, r.width, r.height);
+			backgroundSource = ImageIO.read(new File("src/main/java/ibcompsci/urdenwaz/shouldidodge/resources/background3.png"));
+			backgroundSource = ImageModifier.resizeImage(backgroundSource , r.width, r.height);
 			backgroundImage = new JLabel();
 			backgroundImage.setBounds(0, 0, r.width, r.height);
-			backgroundImage.setIcon(new ImageIcon(source));
-			add(backgroundImage);
+			RescaleOp dim = new RescaleOp(0.8f, 0, null);
+			dim.filter(backgroundSource, backgroundSource);
+			backgroundImage.setIcon(new ImageIcon(backgroundSource ));
 		} catch (IOException e1) {}
 		
-				
 		// first page which accepts the user input
 		tl = new TextListener(r) {
 			@Override
 			public void triggerSwap(String s) {
+				tl.add(backgroundImage);
+				update(getGraphics());
+				tl.remove(backgroundImage);
 				cp.addUsers(s);
 				swapPanels();
+			}
+			@Override
+			public void superUpdate() {
+				update(getGraphics());
 			}
 		};
 		add(tl);
@@ -105,7 +114,6 @@ public class InteractivePanel extends JPanel {
 		// reload button for manual changes
 		refresh = new JLabel();
 		refresh.setBounds(subBounds[2]);
-		refresh.setBorder(new javax.swing.border.LineBorder(java.awt.Color.BLUE));
 		
 		refresh.addMouseListener(new java.awt.event.MouseAdapter() {
 			@Override
@@ -122,8 +130,7 @@ public class InteractivePanel extends JPanel {
 			e.printStackTrace();
 		}
 		
-		
-		
+		add(backgroundImage, -1);
 		
 		
 	}
