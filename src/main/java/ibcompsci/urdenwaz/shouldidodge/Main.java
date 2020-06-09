@@ -21,9 +21,11 @@ public class Main {
     //todo algorithm
     public static void main(String[] args) throws Exception {
         ApiClient client = new ApiClient(ENDPOINT, ApiClient.loadKey("key.txt"));
+        matthewsTest();
         User.__init__(PATCH);
         JFrame frame = new MainUI("ShouldIDodge.gg", client);
         frame.setVisible(true);
+        
     }
    
     public static void championLookupExample() throws ApiException {
@@ -63,7 +65,7 @@ public class Main {
         ApiClient client = new ApiClient(ENDPOINT, ApiClient.loadKey("key.txt"));
         LobbyInput Lobby = new LobbyInput(client);
 //    	summonerExample();
-        Summoner user1 = Lobby.getChampion("a j o s n 8");
+        Summoner user1 = Lobby.getChampion("xxunknowndeathxx");
 
         System.out.println(user1.getWinrate());
         System.out.println(user1.getLoseStreak());
