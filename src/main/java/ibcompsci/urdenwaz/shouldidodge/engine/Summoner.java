@@ -25,11 +25,12 @@ public class Summoner {
 	private String name;
 	private ApiClient client;
 	private HashMap<Integer, int[]> championWinRate;
+	HashSet<Integer> AllEgirlChamps;
 	private HashMap<String, Integer> roles;
 	private String mainRole;	
 	private int profileIcon;
 	private DdragonLookup lookup;
-
+	private boolean egirl;
 	public Summoner(String ID, String accountID, String puuID, String name, int profileIcon, ApiClient client)
 			throws IOException, ApiException {
 		this.accountID = accountID;
@@ -46,6 +47,8 @@ public class Summoner {
 	
 		calculateWinRate();
 		calculateLoseStreakAndRole();
+		this.AllEgirlChamps = new HashSet<>();
+		egirl = isEGirl();
 	}
 
 	public Image getProfileIcon() throws IOException {
@@ -55,7 +58,19 @@ public class Summoner {
 	public boolean shouldIdodge() {
 		return loseStreak > 3 || (winrate <= 0.45 && games > 40);
 	}
-
+	public boolean shouldIdodge(String input) {
+		if(input.equals("Support")) {
+			input = "DUO_SUPPORT";
+		}
+		else if(input.equals("ADC")) {
+			input = "DUO_CARRY";
+		}
+		input.toUpperCase();
+		return shouldIdodge() || (!mainRole.equals(input));
+	} 
+	public boolean shouldIdodge(int champion) throws ApiException {
+		return shouldIdodge() || firstTime(champion) ||(egirl && !AllEgirlChamps.contains(champion));
+	}
 	public float getWinrate() {
 		return winrate;
 	}
@@ -196,7 +211,6 @@ public class Summoner {
 	public boolean isEGirl() throws ApiException, FileNotFoundException {
 		JsonArray masteries = client.getChampions(ID);
 		Scanner sc = new Scanner(new File("EgirlChamps.txt"));
-		HashSet<Integer> AllEgirlChamps = new HashSet<>();
 
 		while(sc.hasNext()) {
 			int holder = sc.nextInt();
