@@ -21,7 +21,6 @@ public class Main {
     //todo algorithm
     public static void main(String[] args) throws Exception {
         ApiClient client = new ApiClient(ENDPOINT, ApiClient.loadKey("key.txt"));
-        matthewsTest();
         User.__init__(PATCH);
         JFrame frame = new MainUI("ShouldIDodge.gg", client);
         frame.setVisible(true);

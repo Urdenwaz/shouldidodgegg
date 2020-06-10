@@ -1,5 +1,6 @@
 package ibcompsci.urdenwaz.shouldidodge.objects;
 
+import java.awt.Font;
 import java.awt.Image;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
@@ -8,9 +9,11 @@ import java.io.File;
 import java.io.IOException;
 
 import javax.imageio.ImageIO;
+import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.border.CompoundBorder;
 
 import ibcompsci.urdenwaz.shouldidodge.engine.ApiClient;
 import ibcompsci.urdenwaz.shouldidodge.resources.ImageModifier;
@@ -37,30 +40,36 @@ public class InteractivePanel extends JPanel {
 		this.client = client;
 	}
 	
-	private void swapPanels() {
-		System.out.println(getComponentCount());
+	public void swapPanels() {
+		cp.add(backgroundImage);
+		cp.remove(backgroundImage);
 		if (getComponentCount() == 1) {
 			remove(tl);
 			add(cp, 0);
 			add(run, 0);
 			add(refresh, 0);
+			getBack();
 		} else {
+			cp.clearSummoners();
 			remove(cp);
 			remove(run);
 			remove(refresh);
 			add(tl);
+			tl.reset();
 		}
 		add(backgroundImage, -1);
 		update(getGraphics());
 	}
+	
+	public void getBack() {}
 	
 	@Override
 	public void setBounds(Rectangle r) {
 		super.setBounds(r);
 		subBounds = new Rectangle[] {
 				new Rectangle(0, 0, r.width, r.height - bHeight),
-				new Rectangle(bHeight, r.height - bHeight-1, r.width, bHeight),
-				new Rectangle(0, r.height - bHeight-1, bHeight, bHeight)
+				new Rectangle(0, r.height - bHeight-1, r.width, bHeight),
+				new Rectangle(2, r.height - bHeight+1, bHeight-4, bHeight-4)
 		};
 		
 		// background image
@@ -71,7 +80,7 @@ public class InteractivePanel extends JPanel {
 			backgroundImage.setBounds(0, 0, r.width, r.height);
 			RescaleOp dim = new RescaleOp(0.8f, 0, null);
 			dim.filter(backgroundSource, backgroundSource);
-			backgroundImage.setIcon(new ImageIcon(backgroundSource ));
+			backgroundImage.setIcon(new ImageIcon(backgroundSource));
 		} catch (IOException e1) {}
 		
 		// first page which accepts the user input
@@ -84,10 +93,6 @@ public class InteractivePanel extends JPanel {
 				cp.addUsers(s);
 				swapPanels();
 			}
-			@Override
-			public void superUpdate() {
-				update(getGraphics());
-			}
 		};
 		add(tl);
 
@@ -99,15 +104,25 @@ public class InteractivePanel extends JPanel {
 		
 		// buttons at the bottom.
 		// button that returns the mandate.
-		run = new JLabel("Lorem Ipsum");
+		run = new JLabel("Click for results! Hit refresh after any edits.");
 		run.setHorizontalAlignment(JLabel.CENTER);
 		run.setBounds(subBounds[1]);
-
+		
+		
+		run.setBorder(new CompoundBorder(
+				BorderFactory.createEmptyBorder(0,-1,-1,-1),
+				new javax.swing.border.LineBorder(java.awt.Color.WHITE)));
+		
+		Font f = new Font("Comic Sans MS", Font.BOLD, 15);
+		run.setFont(f);
+		run.setForeground(java.awt.Color.WHITE);
+		
+		run.setCursor(java.awt.Cursor.getPredefinedCursor(java.awt.Cursor.HAND_CURSOR));
+		
 		run.addMouseListener(new java.awt.event.MouseAdapter() {
 			@Override
 			public void mousePressed(java.awt.event.MouseEvent evt) {
 				cp.shouldidodge();
-				System.out.println("Button clicked");
 			}
 		});
 		
@@ -122,10 +137,12 @@ public class InteractivePanel extends JPanel {
 			}
 		});
 		
+		refresh.setCursor(java.awt.Cursor.getPredefinedCursor(java.awt.Cursor.HAND_CURSOR));
+		
 		try {
 			Image refImage = ImageIO.read(new File("src/main/java/ibcompsci/urdenwaz/shouldidodge/resources/refresh.png"));
 			refresh.setIcon(
-					new ImageIcon(ImageModifier.resizeImage(refImage, refresh.getWidth(), refresh.getHeight())));
+					new ImageIcon(ImageModifier.resizeImage(refImage, refresh.getWidth()-2, refresh.getHeight()-2)));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

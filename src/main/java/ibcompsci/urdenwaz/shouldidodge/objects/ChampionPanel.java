@@ -46,7 +46,6 @@ public class ChampionPanel extends JPanel {
 		
 		Rectangle b = getBounds();
 		
-		User.initUser(new Rectangle(0, b.height/n, b.width, b.height/n));
 		
 		for (int i = 0; i < n; i++) {
 			User u = (users[i] == null) ? new User() : users[i];
@@ -74,6 +73,8 @@ public class ChampionPanel extends JPanel {
 			
 			summoners[n] = li.getChampion(u);
 			usernames[n] = (summoners[n] == null) ? "MoreThan16Characters" : u; 
+			if (usernames[n].equals("billyjoebiff")) {
+			}
 			users[n].inputData(usernames[n], summoners[n]);
 			
 			n++;
@@ -90,9 +91,17 @@ public class ChampionPanel extends JPanel {
 			}
 			users[i].inputData(usernames[i],  summoners[i]);
 		}
-		
 		update(getGraphics());
-		
+	}
+	
+	public void clearSummoners() {
+		for (User u : users) {
+			remove(u);
+		}
+		users = new User[5];
+		usernames = new String[5];
+		summoners = new Summoner[5];
+		updateBounds();
 	}
 	
 	public void shouldidodge() {
@@ -100,20 +109,15 @@ public class ChampionPanel extends JPanel {
 		for (int i = 0; i < 5; i++) {
 			if (summoners[i] == null) continue;
 
-			System.out.println(summoners[i].getName());
-			System.out.println(users[i].getChampion());
 			String champ = users[i].getChampion();
-			System.out.println(users[i].getRole());
 			String role = users[i].getRole();
 			try {
 				users[i].dodge(
 						summoners[i].shouldIdodge(role, champ != null ? summoners[i].getChampionID(champ): -1)
 						);
 			} catch (ApiException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			System.out.println();
 		}
 		
 	}
@@ -121,6 +125,7 @@ public class ChampionPanel extends JPanel {
 	@Override
 	public void setBounds(Rectangle r) {
 		super.setBounds(r);
+		User.initUser(new Rectangle(0, r.height/n, r.width, r.height/n));
 		updateBounds();
 	}
 	

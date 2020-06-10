@@ -106,10 +106,10 @@ public class User extends JPanel {
 		this.summoner = summoner;
 		
 		summonerName = s;
-		
 		nameArea.setText(summonerName);
 		
 		if (summoner != null) {
+			nameArea.setBorder(null);
 			try {
 				Image summonerImage = summoner.getProfileIcon();
 				summonerIcon = new ImageIcon(
@@ -164,9 +164,11 @@ public class User extends JPanel {
 		nameArea.setForeground(Color.WHITE);
 		FontMetrics fm = nameArea.getFontMetrics(sansBig);
 		nameArea.setFont(sansBig);
+		nameArea.setBorder(new javax.swing.border.LineBorder(java.awt.Color.WHITE));
+		nameArea.setCaretColor(java.awt.Color.WHITE);
 		nameArea.setBounds(iconBox.getX() + iconBox.getWidth() + 15,
 				(getBounds().height-fm.getHeight())/2,
-				getBounds().width/2 - iconBox.getWidth() - margin*2,
+				getBounds().width/2 - iconBox.getWidth() - margin*4,
 				fm.getHeight());
 		
 		add(nameArea);
@@ -208,18 +210,14 @@ public class User extends JPanel {
 	
 	public void reset() {
 		verdictBox.setIcon(null);
-		setBackground(null);
 	}
 	
 	public void dodge(boolean ishoulddodge) {
 		
 		if (ishoulddodge) {
 			verdictBox.setIcon(deny);
-			System.out.print(" dodged");
-			setBackground(java.awt.Color.PINK);
 		} else {
 			verdictBox.setIcon(confirm);
-			setBackground(java.awt.Color.CYAN);
 		}
 		dodge = ishoulddodge;
 	}

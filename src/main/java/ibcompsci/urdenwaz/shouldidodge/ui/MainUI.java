@@ -93,10 +93,9 @@ public class MainUI extends JFrame {
     	JPanel r;
 
     	// toolbar panel
-    	r = new Toolbar(this);
-    	r.setBackground(Color.BLACK);
+    	Toolbar tool = new Toolbar(this);
 
-    	ret[0] = r;
+    	ret[0] = tool;
 
     	// title panel
 
@@ -106,9 +105,21 @@ public class MainUI extends JFrame {
 
     	// Interactive panel
 
-    	InteractivePanel ip = new InteractivePanel(client);
+    	InteractivePanel ip = new InteractivePanel(client) {
+    		@Override
+    		public void getBack() {
+    			tool.back();
+    		}
+    	};
+    	tool.addBack(new java.awt.event.MouseAdapter() {
+    		@Override
+    		public void mousePressed(java.awt.event.MouseEvent evt) {
+    			ip.swapPanels();
+    			tool.back();
+     		}
+    	});
     	ret[2] = ip;
-
+    	
     	// standardized formatting of panels
 		for (int i = 0; i < mainFields.length; i++) {
 			ret[i].setBounds(mainFields[i]);

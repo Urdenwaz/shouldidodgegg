@@ -51,6 +51,7 @@ public class TextListener extends JPanel {
 				customListener(listener, r);
 			}
 		});
+		listener.setCursor(java.awt.Cursor.getPredefinedCursor(java.awt.Cursor.HAND_CURSOR));
 		
 		add(listener);
 		
@@ -65,10 +66,15 @@ public class TextListener extends JPanel {
 		StyleConstants.setAlignment(attribs, StyleConstants.ALIGN_CENTER);
 		jtp.setParagraphAttributes(attribs, false);
 		
+		
 		add(jtp);
 		
 		updateText(start);
 		
+	}
+	
+	public void reset() {
+		updateText(start);
 	}
 	
 	public void updateText(String s) {
@@ -82,7 +88,6 @@ public class TextListener extends JPanel {
 	}
 	
 	public void customListener(JPanel listener, Rectangle r) {
-//		remove(listener);
 		
 		jta = new JTextArea();
 		jta.setBounds(10, 10, r.width-20, r.height-20);
@@ -128,6 +133,4 @@ public class TextListener extends JPanel {
 	// function inherited from callee object at instantiation point
 	public void triggerSwap(String s) {}
 	
-	public void superUpdate() {}
-
 }

@@ -29,8 +29,6 @@ public class ImageModifier {
 		double h = i.getHeight(), w = i.getWidth();
 		double ratio = height / h;
 		
-		System.out.println(h + " " + height + " " + ratio);
-		
 		BufferedImage ret = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
 		Graphics2D g2 = ret.createGraphics();
 		
