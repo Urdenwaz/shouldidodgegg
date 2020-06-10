@@ -65,12 +65,14 @@ public class Summoner {
 		else if(input.equals("ADC")) {
 			input = "DUO_CARRY";
 		}
-		input.toUpperCase();
+		input = input.toUpperCase();
 		return shouldIdodge() || (!mainRole.equals(input));
 	} 
 	public boolean shouldIdodge(int champion) throws ApiException {
 		return shouldIdodge() || firstTime(champion) ||(egirl && !AllEgirlChamps.contains(champion));
 	}
+	
+
 	public float getWinrate() {
 		return winrate;
 	}
