@@ -108,12 +108,6 @@ public class User extends JPanel {
 		summonerName = s;
 		
 		nameArea.setText(summonerName);
-		FontMetrics fm = nameArea.getFontMetrics(sansBig);
-		nameArea.setFont(sansBig);
-		nameArea.setBounds(iconBox.getX() + iconBox.getWidth() + 15,
-				(getBounds().height-fm.getHeight())/2,
-				getBounds().width/2 - iconBox.getWidth() - margin*2,
-				fm.getHeight());
 		
 		if (summoner != null) {
 			try {
@@ -153,6 +147,10 @@ public class User extends JPanel {
 		
 		Color gold = new java.awt.Color(200,155,48, 200);
 		
+		boldSans = new Font("Comic Sans MS", Font.BOLD, 12);
+		sansBig = FontGenerator.$$$getFont$$$("Comic Sans MS", -1, 20, this.getFont());
+		sans = FontGenerator.$$$getFont$$$("Comic Sans MS", -1, 12, this.getFont());
+		
 		// area for the summoner icon to go into
 		iconBox = new JLabel();
 		iconBox.setBounds(margin, margin, r.height-margin*2, r.height-margin*2);
@@ -164,19 +162,22 @@ public class User extends JPanel {
 		nameArea.setEditable(true);
 		nameArea.setOpaque(false);
 		nameArea.setForeground(Color.WHITE);
+		FontMetrics fm = nameArea.getFontMetrics(sansBig);
+		nameArea.setFont(sansBig);
+		nameArea.setBounds(iconBox.getX() + iconBox.getWidth() + 15,
+				(getBounds().height-fm.getHeight())/2,
+				getBounds().width/2 - iconBox.getWidth() - margin*2,
+				fm.getHeight());
 		
 		add(nameArea);
 		
 		Rectangle b = getBounds();
 		
 		// dropdown boxes
-		boldSans = new Font("Comic Sans MS", Font.BOLD, 12);
 		
 		roleLabel = new JLabel("Role");
-		sansBig = FontGenerator.$$$getFont$$$("Comic Sans MS", -1, 20, nameArea.getFont());
-		sans = FontGenerator.$$$getFont$$$("Comic Sans MS", -1, 12, nameArea.getFont());
 		roleLabel.setFont(sans);
-		FontMetrics fm = roleLabel.getFontMetrics(sans);
+		fm = roleLabel.getFontMetrics(sans);
 		roleLabel.setBounds(b.width/2 + margin, b.height/4 - fm.getHeight(), fm.stringWidth(roleLabel.getText()), fm.getHeight());
 		roleLabel.setForeground(Color.WHITE);
 		

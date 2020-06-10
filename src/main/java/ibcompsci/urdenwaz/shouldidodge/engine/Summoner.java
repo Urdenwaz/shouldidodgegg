@@ -71,7 +71,7 @@ public class Summoner {
 	public boolean shouldIdodge(int champion) throws ApiException {
 		return shouldIdodge() || firstTime(champion) ||(egirl && !AllEgirlChamps.contains(champion));
 	}
-	
+	 
 	public int getChampionID(String c) {
 		return lookup.getChampionID(c);
 	}
