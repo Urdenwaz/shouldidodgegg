@@ -9,6 +9,7 @@ import javax.swing.JPanel;
 import javax.swing.border.CompoundBorder;
 
 import ibcompsci.urdenwaz.shouldidodge.engine.ApiClient;
+import ibcompsci.urdenwaz.shouldidodge.engine.ApiException;
 import ibcompsci.urdenwaz.shouldidodge.engine.LobbyInput;
 import ibcompsci.urdenwaz.shouldidodge.engine.Summoner;
 
@@ -98,10 +99,20 @@ public class ChampionPanel extends JPanel {
 		
 		for (int i = 0; i < 5; i++) {
 			if (summoners[i] == null) continue;
-			System.out.print(summoners[i].getName());
-			users[i].dodge(
-					summoners[i].shouldIdodge()
-					);
+
+			System.out.println(summoners[i].getName());
+			System.out.println(users[i].getChampion());
+			String champ = users[i].getChampion();
+			System.out.println(users[i].getRole());
+			String role = users[i].getRole();
+			try {
+				users[i].dodge(
+						summoners[i].shouldIdodge(role, champ != null ? summoners[i].getChampionID(champ): -1)
+						);
+			} catch (ApiException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			System.out.println();
 		}
 		

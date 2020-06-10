@@ -42,7 +42,7 @@ public class Summoner {
 		this.loseStreak = 0;
 		this.championWinRate = new HashMap<Integer, int[]>();
 		this.roles = new HashMap<String, Integer>();
-
+		this.mainRole = "";
 		lookup = new DdragonLookup("10.10.1");
 	
 		calculateWinRate();
@@ -72,9 +72,20 @@ public class Summoner {
 		return shouldIdodge() || firstTime(champion) ||(egirl && !AllEgirlChamps.contains(champion));
 	}
 	
+	public int getChampionID(String c) {
+		return lookup.getChampionID(c);
+	}
 	
 	public boolean shouldIdodge(String input, int champion) throws ApiException {
-		return shouldIdodge(input) || firstTime(champion) ||(egirl && !AllEgirlChamps.contains(champion));
+		
+		boolean champ = false;
+		boolean role = false;
+		if(champion != -1)
+		champ = shouldIdodge(champion);
+		if(!input.equals(""))
+		role = shouldIdodge(input);
+		return role || champ || shouldIdodge();
+		
 	}
 	
 	public float getWinrate() {
@@ -92,7 +103,7 @@ public class Summoner {
 		return name;
 	}
 
-
+	
 	public void calculateWinRate() throws ApiException {
 		List<ApiValue> ranked = client.getLeagues(ID);
 		if (ranked == null || ranked.size() == 0) {

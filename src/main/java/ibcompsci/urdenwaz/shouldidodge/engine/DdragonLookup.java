@@ -37,8 +37,8 @@ public class DdragonLookup {
         championList = getListFromDD();
     }
 
-    public String getChampionID(String name) {
-        return championList.getJsonObject("data").getAsJsonObject(name).get("key").getAsString();
+    public int getChampionID(String name) {
+        return championList.getJsonObject("data").getAsJsonObject(name).get("key").getAsInt();
     }
 
     public String getChampionListRaw() {

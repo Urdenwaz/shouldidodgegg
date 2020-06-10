@@ -228,4 +228,17 @@ public class User extends JPanel {
 		return nameArea.getText();
 	}
 	
+	public String getChampion() {
+		int index = champion.getSelectedIndex();
+		if(index == -1)
+			return null;
+		return championList[index];
+	}
+	public String getRole() {
+		int index = role.getSelectedIndex();
+		if(index == -1)
+			return null;
+		return roleList[index];
+	}
+	
 }
