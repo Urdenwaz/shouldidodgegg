@@ -72,7 +72,11 @@ public class Summoner {
 		return shouldIdodge() || firstTime(champion) ||(egirl && !AllEgirlChamps.contains(champion));
 	}
 	
-
+	
+	public boolean shouldIdodge(String input, int champion) throws ApiException {
+		return shouldIdodge(input) || firstTime(champion) ||(egirl && !AllEgirlChamps.contains(champion));
+	}
+	
 	public float getWinrate() {
 		return winrate;
 	}
