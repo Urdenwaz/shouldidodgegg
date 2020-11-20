@@ -227,7 +227,7 @@ public class Summoner {
 
 	public boolean isEGirl() throws ApiException, FileNotFoundException {
 		JsonArray masteries = client.getChampions(ID);
-		Scanner sc = new Scanner(new File("EgirlChamps.txt"));
+		Scanner sc = new Scanner(new File("tooEasyChamps.txt"));
 
 		while(sc.hasNext()) {
 			int holder = sc.nextInt();
